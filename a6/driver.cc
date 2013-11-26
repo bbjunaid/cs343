@@ -99,6 +99,7 @@ void uMain::main() {
         delete students[id];
     }
 
+    // Mahdi comment
     cout << "***********************" << endl;
 }
 
