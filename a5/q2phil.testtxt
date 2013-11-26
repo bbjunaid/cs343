@@ -1,0 +1,391 @@
+SAMPLE TEST DOCUMENTATION
+=========================
+This problem is a classic dining philosophers problem which demonstrates also
+the different tpyes of monitors or synchronization using Tasks that can 
+occur.
+
+USER INTERFACE TESTING
+This tests the command line parameters and appropraite output messages.
+
+Here is the script-fixed log of the testing performed.
+
+Note that the driver is the same for all the philosophers, so the internal default
+executable is used for testing.
+
+From below:
+
+- Line 17 shows the program running fine for no inputs
+- Line 103 tests that P > 1
+- Line 105 tests that N > 0
+- Line 107 tests than seed > 0
+
+     1  Script started on Mon 18 Nov 2013 09:44:03 PM EST
+     2  [bbjunaid@linux024 ~/cs343/a5]$ make
+     3  echo "IMPLTYPE=INT" > ImplType
+     4  sleep 2
+     5  u++                                      -g -Wall -Wno-unused-label -MMD -DTABLETYPE_INT   -c -o q2tableINT.o q2tableINT.cc
+     6  uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+     7  u++                                      -g -Wall -Wno-unused-label -MMD -DTABLETYPE_INT   -c -o q2table.o q2table.cc
+     8  uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+     9  u++                                      -g -Wall -Wno-unused-label -MMD -DTABLETYPE_INT   -c -o q2printer.o q2printer.cc
+    10  uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+    11  u++                                      -g -Wall -Wno-unused-label -MMD -DTABLETYPE_INT   -c -o q2driver.o q2driver.cc
+    12  uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+    13  u++                                      -g -Wall -Wno-unused-label -MMD -DTABLETYPE_INT   -c -o q2phil.o q2phil.cc
+    14  uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+    15  u++                                      -g -Wall -Wno-unused-label -MMD -DTABLETYPE_INT q2tableINT.o q2table.o q2printer.o q2driver.o q2phil.o -o phil
+    16  uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+    17  [bbjunaid@linux024 ~/cs343/a5]$ ./phil
+    18  Phil0   Phil1   Phil2   Phil3   Phil4
+    19  ******  ******  ******  ******  ******
+    20  H       H       H       H       H
+    21  E2,28   W1,2    E4,26   W3,4    W4,0
+    22  T
+    23  H       E4,26   T               E1,29
+    24  W0,1    T               E2,28   T
+    25  E3,25                   T
+    26  T       H                       H
+    27                                  E2,27
+    28          E5,21   H       H       T
+    29          T       E5,21
+    30  H       H       T       W3,4
+    31                          E3,25
+    32          E3,18           T
+    33  E2,23   T               H
+    34                          E3,22
+    35  T               H       T       H
+    36  H                               E1,26
+    37  E4,19           E3,18           T
+    38                                  H
+    39  T       H                       W4,0
+    40                  T               E3,23
+    41          E5,13   H               T
+    42          T       W2,3
+    43                  E1,17
+    44  H       H       T       H
+    45                          E4,18
+    46  E1,18   W1,2            T       H
+    47  T       E5,8                    E1,22
+    48  H       T               H       T
+    49  E3,15                   E2,16
+    50  T               H       T       H
+    51          H       E4,13           E1,21
+    52  H       W1,2    T               T
+    53  W0,1    E3,5    H
+    54  E4,11   T       E5,8            H
+    55  T               T       H       E3,18
+    56                          W3,4    T
+    57  H                       E1,15
+    58  E5,6                    T
+    59                          H
+    60                          E1,14
+    61  T       H               T
+    62          E1,4    H
+    63          T       W2,3    H
+    64  H               E3,5    W3,4    H
+    65  E1,5    H       T       E2,12   W4,0
+    66  T               H
+    67          E1,3    W2,3
+    68          T
+    69          H       E4,1    T       E4,14
+    70          W1,2            H       T
+    71                  T       W3,4    H
+    72          E1,2            E2,10   W4,0
+    73          T               T       E5,9
+    74                                  T
+    75  H                               H
+    76                                  E5,4
+    77                          H       T
+    78                  H       E1,9
+    79  E1,4    H       W2,3    T
+    80                  E1,0
+    81  ...     ...     F       ...     ...
+    82  T       W1,2            H       H
+    83          E1,1                    E4,0
+    84          T               W3,4
+    85  ...     ...     ...     ...     F
+    86                          E2,7
+    87  H                       T
+    88  E4,0    H
+    89          W1,2
+    90  F       ...     ...     ...     ...
+    91          E1,0            H
+    92  ...     F       ...     ...     ...
+    93                          E3,4
+    94                          T
+    95                          H
+    96                          E2,2
+    97                          T
+    98                          H
+    99                          E2,0
+   100  ...     ...     ...     F       ...
+   101  ***********************
+   102  Philosophers terminated
+   103  [bbjunaid@linux024 ~/cs343/a5]$ ./phil 1
+   104  Usage: ./phil [ P (> 1) [ N (> 0) [ S (> 0) ] ] ]
+   105  [bbjunaid@linux024 ~/cs343/a5]$ ./phil 2 0
+   106  Usage: ./phil [ P (> 1) [ N (> 0) [ S (> 0) ] ] ]
+   107  [bbjunaid@linux024 ~/cs343/a5]$ ./phil 2 1 0
+   108  Usage: ./phil [ P (> 1) [ N (> 0) [ S (> 0) ] ] ]
+   109  [bbjunaid@linux024 ~/cs343/a5]$ ./phil 2 1 1
+   110  Phil0   Phil1
+   111  ******  ******
+   112  H       H
+   113          E1,0
+   114  ...     F
+   115  E1,0
+   116  F       ...
+   117  ***********************
+   118  Philosophers terminated
+   119  [bbjunaid@linux024 ~/cs343/a5]$ exit
+   120  exit
+   121
+   122  Script done on Mon 18 Nov 2013 09:44:48 PM EST
+
+ALGORITHM TESTING
+
+  NOTE: The barging solution is incomplete and thus its output will not be
+  shown. However, the method I was going to approach barging is that 
+  when a signal occurs, a flag is raised that signalling is happening.
+  If a task comes into pickup while that flag is raised, it is considered
+  a barger and it is put into a list. The general idea is that as long as 
+  a task is in the barging list and the tasks that were in front of the first barger
+  have not yet went, then the barger cannot go until these tasks get to execute and
+  leave the waiting queue. Some mechanism for tracking when these tasks have left
+  must be required.
+
+  NOTE2: I used the FFIO simulation in uC++ textbook section 9.12.2 for Automatic Signal.
+  I pretty much took it strraight out of the notes because it works. The reason this works
+  is because it does checking cycles in a daisy chain fashion and it prevents starvation
+  issues which are discussed in the section of the book that I cited. I will present 
+  output which shows that tasks do not starve.
+
+  Note3: I have a deadlock in my task based solution. I am not sure the reason for this
+  however I suspect it has something to do with signalBlock() being used.
+
+
+  TEST 1: Simple Starvation for Internal Scheduling, Automatic
+  -------
+    DATA DESCRIPTION
+    Input pareters are 2 philosopers and 50 noodles. 
+
+    TESTING
+    Here is the script-fixed log of the testing performed with line numbers
+    attached. It can be seen that neither philosopher is starved
+
+    
+    22  [bbjunaid@linux024 ~/cs343/a5]$ ./phil 2 50 1
+    23  Phil0   Phil1
+    24  ******  ******
+    25  H       H
+    26          E3,47
+    27  E1,49   T
+    28  T       H
+    29  H
+    30  E3,46   W1,0
+    31  T       E5,42
+    32          T
+    33          H
+    34  H       E2,40
+    35  W0,1    T
+    36  E4,42
+    37  T       H
+    38  H
+    39  E3,39   W1,0
+    40  T       E1,39
+    41          T
+    42  H       H
+    43  W0,1    E5,34
+    44  E2,37   T
+    45  T
+    46  H
+    47  E4,33
+    48  T       H
+    49          E3,31
+    50          T
+    51          H
+    52          E1,30
+    53  H       T
+    54  E1,32
+    55  T       H
+    56          E1,29
+    57          T
+    58          H
+    59          E1,28
+    60  H       T
+    61  E1,31
+    62  T       H
+    63  H       E3,25
+    64  W0,1    T
+    65  E1,30   H
+    66  T       W1,0
+    67          E5,20
+    68          T
+    69  H       H
+    70  W0,1    E2,18
+    71  E5,25   T
+    72  T       H
+    73          E5,13
+    74          T
+    75  H       H
+    76          E5,8
+    77  E2,23   T
+    78  T       H
+    79          E1,7
+    80  H       T
+    81  E2,21
+    82  T       H
+    83  H       E3,4
+    84  E1,20   T
+    85  T       H
+    86          E4,0
+    87  ...     F
+    88  H
+    89  E1,19
+    90  T
+    91  H
+    92  E3,16
+    93  T
+    94  H
+    95  E5,11
+    96  T
+    97  H
+    98  E3,8
+    99  T
+   100  H
+   101  E2,6
+   102  T
+   103  H
+   104  E4,2
+   105  T
+   106  H
+   107  E2,0
+   108  F       ...
+   109  ***********************
+   110  Philosophers terminated
+   111  [bbjunaid@linux024 ~/cs343/a5]$ make phil TYPE=AUTO
+   112  rm -f ImplType
+   113  touch q2table.h
+   114  make phil TYPE="AUTO"
+   115  make[1]: Entering directory `/u7/bbjunaid/cs343/a5'
+   116  echo "IMPLTYPE=AUTO" > ImplType
+   117  sleep 2
+   118  make[1]: Leaving directory `/u7/bbjunaid/cs343/a5'
+   119  make[1]: Entering directory `/u7/bbjunaid/cs343/a5'
+   120  u++                                      -g -Wall -Wno-unused-label -MMD -DTABLETYPE_AUTO   -c -o q2tableAUTO.o q2tableAUTO.cc
+   121  uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+   122  u++                                      -g -Wall -Wno-unused-label -MMD -DTABLETYPE_AUTO   -c -o q2table.o q2table.cc
+   123  uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+   124  u++                                      -g -Wall -Wno-unused-label -MMD -DTABLETYPE_AUTO   -c -o q2driver.o q2driver.cc
+   125  uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+   126  u++                                      -g -Wall -Wno-unused-label -MMD -DTABLETYPE_AUTO   -c -o q2phil.o q2phil.cc
+   127  uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+   128  u++                                      -g -Wall -Wno-unused-label -MMD -DTABLETYPE_AUTO q2tableAUTO.o q2table.o q2printer.o q2driver.o q2phil.o -o phil
+   129  uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+   130  make[1]: Leaving directory `/u7/bbjunaid/cs343/a5'
+   131  [bbjunaid@linux024 ~/cs343/a5]$ ./phil 2 50 1
+   132  Phil0   Phil1
+   133  ******  ******
+   134  H       H
+   135          E3,47
+   136  E1,49   T
+   137  T       H
+   138  H
+   139  E3,46   W1,0
+   140  T       E5,42
+   141          T
+   142          H
+   143  H       E2,40
+   144  W0,1    T
+   145  E4,42
+   146  T       H
+   147  H
+   148  E3,39   W1,0
+   149  T       E1,39
+   150          T
+   151  H       H
+   152  W0,1    E5,34
+   153  E2,37   T
+   154  T
+   155  H
+   156  E4,33
+   157  T       H
+   158          E3,31
+   159          T
+   160          H
+   161          E1,30
+   162  H       T
+   163  E1,32
+   164  T       H
+   165          E1,29
+   166          T
+   167          H
+   168          E1,28
+   169  H       T
+   170  E1,31
+   171  T       H
+   172  H       E3,25
+   173  W0,1    T
+   174  E1,30   H
+   175  T       W1,0
+   176          E5,20
+   177          T
+   178  H       H
+   179  W0,1    E2,18
+   180  E5,25   T
+   181  T       H
+   182          E5,13
+   183          T
+   184  H       H
+   185          E5,8
+   186  E2,23   T
+   187  T       H
+   188          E1,7
+   189  H       T
+   190  E2,21
+   191  T       H
+   192  H       E3,4
+   193  E1,20   T
+   194  T       H
+   195          E4,0
+   196  ...     F
+   197  H
+   198  E1,19
+   199  T
+   200  H
+   201  E3,16
+   202  T
+   203  H
+   204  E5,11
+   205  T
+   206  H
+   207  E3,8
+   208  T
+   209  H
+   210  E2,6
+   211  T
+   212  H
+   213  E4,2
+   214  T
+   215  H
+   216  E2,0
+   217  F       ...
+   218  ***********************
+   219  Philosophers terminated
+   220  [bbjunaid@linux024 ~/cs343/a5]$ exit
+   221  exit
+   222
+   223  Script done on Mon 18 Nov 2013 09:58:13 PM EST
+ 
+
+    ANALYSIS
+    It can be clearly seen no starvation.    
+
+
+Other tests would be with 3 philsoophers, and then a large number of philosophers to analyze starvation.
+
+To check for starvation, ensure that there is no single philosopher that has been waiting for a long time.
+
+You can merely check the space in the columns.
+
+Other good methods of testing are bash scripts which can run a variation of parameters of philosophers between 2-100 and large number of noodles, and place aborts and see if they fail at all.

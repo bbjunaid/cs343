@@ -1,0 +1,6 @@
+A uC++ monitor using only external scheduling is not possible because 
+inside pickup, the tasks will end up waiting on an _Accept on putdown.
+Similarly in putdown, the tasks will have an _Accept on pickup. However,
+when either of these routines are called, the id of the tasks will not
+be known and thus it is difficult to determine who the calling
+philosopher was.

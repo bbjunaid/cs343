@@ -1,0 +1,5 @@
+This is a livelock problem. This is because all the angels are looking at each other but doing nothing.
+This is indefinite postponement as all the angels start looking at each other at the same time.
+In a deadlock, a resource is claimed but a task/angel will be waiting on another resource. Here
+the angels are essentially doing nothing because they are not supposed to be looking at other, and
+hence suffer from simultaneous arrival "you go first" problem.

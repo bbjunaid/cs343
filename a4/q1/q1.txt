@@ -1,0 +1,39 @@
+1) 
+
+a) It can be seen below that the padded version of the program runs faster.
+
+  4 [681]% time ./q1nopad 100000000
+  5 0x642bf8 0x642bfc
+  6   
+  7 real    0m0.917s
+  8 user    0m0.910s
+  9 sys     0m0.000s
+ 10  
+ 11 [680]% time ./q1pad 100000000
+ 12 0x642c00 0x642c40
+ 13  
+ 14 real    0m0.704s
+ 15 user    0m0.700s
+ 16 sys     0m0.010s
+ 17  
+ 18 [681]% time ./q1nopad 1000000000
+ 19 0x642bf8 0x642bfc
+ 20  
+ 21 real    0m9.123s
+ 22 user    0m9.120s
+ 23 sys     0m0.000s
+ 24 [682]% time ./q1pad 1000000000
+ 25 0x642c00 0x642c40
+ 26  
+ 27 real    0m7.083s
+ 28 user    0m7.080s
+ 29 sys     0m0.000s
+
+From above, Line 8 vs line 15 shows a 0.2s difference between nopad and pad. Line 22 vs line 28 show a 2s 
+difference between pad and nopad.
+
+b) The padded version is faster because the CPU does not need to align the memory manually to perform operations
+on the volatile int variables.
+
+c) The void* cast is needed because since the memory is not aligned, the output can be a different address. When
+casting by void*, the address is 4 bytes aligned and prints correctly.

@@ -1,0 +1,157 @@
+Script started on Thu 07 Nov 2013 09:48:04 PM EST
+[bbjunaid@linux024 ~/cs343/a4]$ nort[K[K[K[K./rn[K[Knorthpole 0 
+Usage: ./northpole [ N (> 0) [ E (> 0) [ Seed (> 0) [ C (>= 0) [ D (>= 0) ] ] ] ] ]
+[bbjunaid@linux024 ~/cs343/a4]$ ./northpole 0 [K[K0[K1 0
+Usage: ./northpole [ N (> 0) [ E (> 0) [ Seed (> 0) [ C (>= 0) [ D (>= 0) ] ] ] ] ]
+[bbjunaid@linux024 ~/cs343/a4]$ ./northpole 1 0[K1 0
+Usage: ./northpole [ N (> 0) [ E (> 0) [ Seed (> 0) [ C (>= 0) [ D (>= 0) ] ] ] ] ]
+[bbjunaid@linux024 ~/cs343/a4]$ ./northpole 1 1 0[K1 -1
+Usage: ./northpole [ N (> 0) [ E (> 0) [ Seed (> 0) [ C (>= 0) [ D (>= 0) ] ] ] ] ]
+[bbjunaid@linux024 ~/cs343/a4]$ ./northpole 1 1 1 -1[K[K1 -1
+Usage: ./northpole [ N (> 0) [ E (> 0) [ Seed (> 0) [ C (>= 0) [ D (>= 0) ] ] ] ] ]
+[bbjunaid@linux024 ~/cs343/a4]$ ./northpole 1 1 1 1 -1[K[K1
+Sa	E1	R2	R3	R4	R5	R6
+--	--	--	--	--	--	--
+						S
+			S	S		V
+				V		
+				I		
+				B 1		I
+S		S	V		S	B 2
+			I			
+			B 3		V	
+					I	
+		V			B 4	
+		I				
+N		B 5				
+A						
+D				U 5		
+	S			D		U 4
+			U 3			D
+			D		U 2	
+	W	U 1			D	
+B 2	H	D	B 4	B 3		B 1
+	X	B 5			d	
+...	...	...	...	...	F	...
+						U 5
+						d
+...	...	...	...	...	...	F
+U 4						
+d				U 3		
+				d		
+...	...	...	...	F	...	...
+			U 2			
+			d			
+...	...	...	F	...	...	...
+N		U 1				
+		d				
+...	...	F	...	...	...	...
+...	F	...	...	...	...	...
+A						
+F	...	...	...	...	...	...
+Workshop closed
+[bbjunaid@linux024 ~/cs343/a4]$ ./northpole 1 1 1 1 1[K[K[K[K[K[K[K[K[K
+Sa	E1	E2	E3	R4	R5	R6	R7	R8
+--	--	--	--	--	--	--	--	--
+			S				S	S
+		S	W					
+		W				S		
+						V	V	
+							I	
+	S	H					B 1	V
+		B 1				I		
+						B 2		I
+S	W		H	S				B 3
+			B 2		S			
+N					V			
+B	H			V				
+U	B 3				I			
+A								
+C		U 3		I				
+		C	U 2					
+	U 1		C					
+B 1	C	B 3	B 2	B 5	B 4			
+U 3	c							
+c			U 2					
+N	W	U 1	c					
+A		c						
+D	H		W				U 5	
+						U 4	D	
+		W				D		U 3
+			H		U 2			D
+				U 1	D			
+B 1	B 1	H	B 2	D			B 3	B 2
+U 5		B 3		B 5	d	B 4		
+d					V			U 4
+							U 3	d
+N					I	U 2	d	V
+						d	V	
+				U 1			I	
+				d				
+A				V				
+C	U 3					V		I
+	C		U 2	I				
+		U 1	C					
+B 2	B 1	C		B 4	B 1	I	B 2	B 3
+	U 3	B 3	c			B 5		
+U 2	c		W					
+c	W							
+	H	U 1	H					
+		c						
+N	B 1	W	B 2					
+A								
+D		H			U 5			
+					D		U 4	
+							D	U 3
+				U 2				D
+				D		U 1		
+B 1		B 3		B 4	B 3	D	B 2	B 5
+						d		
+U 5						V		
+d							U 4	
+					U 3	I	d	
+					d		V	
+N				U 2			I	
+				d	V			U 1
+A				V		B 1	B 2	d
+C	U 3				I			V
+	C		U 2					
+		U 1	C	I				
+B 1		C		B 4	B 3			I
+U 3	c	B 2	B 3					B 5
+c		U 2						
+		c	U 1					
+N			c					
+...	F	...	...	...	...	...	...	...
+...	...	F	...	...	...	...	...	...
+...	...	...	F	...	...	...	...	...
+A								
+D						U 5		
+						D	U 4	
+					U 3		D	
+				U 2	D			
+				D				U 1
+B 1								D
+				d	B 4	B 3	B 5	B 2
+...	...	...	...	F	...	...	...	...
+U 5								
+d								
+N								U 4
+								d
+...	...	...	...	...	...	...	...	F
+						U 3		
+						d		
+...	...	...	...	...	...	F	...	...
+					U 2			
+					d			
+...	...	...	...	...	F	...	...	...
+							U 1	
+							d	
+...	...	...	...	...	...	...	F	...
+Workshop closed
+A								
+F	...	...	...	...	...	...	...	...
+[bbjunaid@linux024 ~/cs343/a4]$ exit
+exit
+
+Script done on Thu 07 Nov 2013 09:49:15 PM EST

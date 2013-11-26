@@ -1,0 +1,82 @@
+SAMPLE TEST DOCUMENTATION
+=========================
+The program plays the hot potato game which takes in a number of players
+between 2-20 and an optional seed. The game consists of sets
+and each set starts with an Umpire tossing a potato to a player
+which decrements a counter in the Potato. The potato is then
+tossed among players until the counter runs out and that player is eliminated.
+
+A new set begins and continues the same way. The game ends when there is one
+player left.
+
+USER INTERFACE TESTING
+This tests the command line parameters and appropraite output messages.
+
+Here is the script-fixed log of the testing performed.
+
+     1  Script started on Wed 09 Oct 2013 06:23:17 PM EDT
+     2  bbjunaid@linux028:~/cs343/a2$ ./hotpotato
+     3  Usage: ./hotpotato players  [ seed ]
+     4   players [2-20], seed >= 0
+     5  bbjunaid@linux028:~/cs343/a2$ ./hotpotato 1
+     6  Incorrect input for number of players.
+     7  Usage: ./hotpotato players  [ seed ]
+     8   players [2-20], seed >= 0
+     9  bbjunaid@linux028:~/cs343/a2$ ./hotpotato 24
+    10  Incorrect input for number of players.
+    11  Usage: ./hotpotato players  [ seed ]
+    12   players [2-20], seed >= 0
+    13  bbjunaid@linux028:~/cs343/a2$ ./hotpotato -3
+    14  Incorrect input for number of players.
+    15  Usage: ./hotpotato players  [ seed ]
+    16   players [2-20], seed >= 0
+    17  bbjunaid@linux028:~/cs343/a2$ ./hotpotato -2
+    18  Incorrect input for number of players.
+    19  Usage: ./hotpotato players  [ seed ]
+    20   players [2-20], seed >= 0
+    21  bbjunaid@linux028:~/cs343/a2$ exit
+    22  exit
+    23
+    24  Script done on Wed 09 Oct 2013 06:24:04 PM EDT
+
+  TEST 1: No parameters
+  -------
+    Line 2 shows the program run with no parameters, and lines 3-4 show the usage
+    output specifying invalid parameters.
+
+  TEST 2: Invalid number of players
+  -------
+    Lines 5, 8, and 13 show invalid input for the number of players. The number
+    cannot be less than 2, or greater than 20. The 2 lines following lines 5, 8,
+    and 13 show the usage of the script signifying that this input was not
+    acceptable.
+
+  TEST 3: Invalid seed value 
+  -------
+    Line 17 tests an invalid seed value which is a value below 0 as srand( seed )
+    accepts an unsigned int for the seed. Thus a value of -2 results in a 
+    usage error message.
+
+ALGORITHM TESTING
+The best way to test algorithm is to compare with the sample output.
+
+Some good tests are all 1s as input, meaning the number of elves < 3, which
+is already done above.
+
+The majority of testing was done by comparing the program output line by line
+with the provdided executable and fixing the logic whereever the program failed.
+
+Some good tests are:
+
+- all inputs at 1, this test is already done above
+- I tested by alternating each input to 1, while the other inputs were
+  maxed at 10. It is to cumbersome to post all these outputs but I verified
+    they matched. I will only show comparison between maxed and min output
+    for the sake of a small test doc.
+- # elves < 3, see Line for my output and Line for the instructor output
+- max out all parameters at a reasonable value. I used 10s as all input, and
+    Line X shows my output and Line Y shows instructors output.
+
+
+Ah...unforunately, I did not have time to do scriptfix of this, but all the output 
+was verfiedi to match.

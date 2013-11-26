@@ -1,0 +1,3 @@
+There is too long of a sequence until reducers communicate to each other.
+
+Instead of a chain of signals, the reducers could eliminate themselves from the signaling..I think.

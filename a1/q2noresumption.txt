@@ -1,0 +1,23 @@
+The method uses functors in C++ to replace the resumption. The following defined for the functor:
+
+struct Handler { 
+	Handler( int &i ) : m_i( i ) {}
+	int operator() (  char c ) {
+		if ( c == 'g' ) {
+        	cout << "g handler, i:" << m_i << endl;
+        	m_i -= 5;                                         
+        	if ( rand() % 5 == 0 ) f( m_i );                  
+		}
+		else if ( c == 'f' ) {
+        	cout << "f handler, i:" << m_i << endl;
+        	m_i -= 7;                                         
+        	if ( rand() % 7 == 0 ) g( m_i );                 
+		}	
+	}
+	private:
+		int &m_i;
+};
+
+In both routines, this handler object is declared locally within the routine. It is statically initialized with the input i to the routines and this variable is stored by reference in the functor. Instead of the resumption exception being raised, this functor is called with a character specifiying if the call is from g or f, and an appropriate action takes place.
+
+It was not possible to pass in the handlers to the routines directly. This was because f and g required knowledge of the Handler struct, while the Handler struct required knowledge of the functions f and g. There was a circular dependency thus the Handler object was declared locally within the routines, and statically so the same handler object can be used in recursive calls.

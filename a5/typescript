@@ -1,0 +1,223 @@
+Script started on Mon 18 Nov 2013 09:57:42 PM EST
+[bbjunaid@linux024 ~/cs343/a5]$ make phil TYPE+IN[K[K[K=INT
+rm -f ImplType
+touch q2table.h
+make phil TYPE="INT"
+make[1]: Entering directory `/u7/bbjunaid/cs343/a5'
+echo "IMPLTYPE=INT" > ImplType
+sleep 2
+make[1]: Leaving directory `/u7/bbjunaid/cs343/a5'
+make[1]: Entering directory `/u7/bbjunaid/cs343/a5'
+u++					 -g -Wall -Wno-unused-label -MMD -DTABLETYPE_INT   -c -o q2tableINT.o q2tableINT.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++					 -g -Wall -Wno-unused-label -MMD -DTABLETYPE_INT   -c -o q2table.o q2table.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++					 -g -Wall -Wno-unused-label -MMD -DTABLETYPE_INT   -c -o q2driver.o q2driver.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++					 -g -Wall -Wno-unused-label -MMD -DTABLETYPE_INT   -c -o q2phil.o q2phil.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++					 -g -Wall -Wno-unused-label -MMD -DTABLETYPE_INT q2tableINT.o q2table.o q2printer.o q2driver.o q2phil.o -o phil
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+make[1]: Leaving directory `/u7/bbjunaid/cs343/a5'
+[bbjunaid@linux024 ~/cs343/a5]$ ./p[Kphil 2 30 [K[K[K50 1
+Phil0	Phil1
+******	******
+H	H
+	E3,47
+E1,49	T
+T	H
+H	
+E3,46	W1,0
+T	E5,42
+	T
+	H
+H	E2,40
+W0,1	T
+E4,42	
+T	H
+H	
+E3,39	W1,0
+T	E1,39
+	T
+H	H
+W0,1	E5,34
+E2,37	T
+T	
+H	
+E4,33	
+T	H
+	E3,31
+	T
+	H
+	E1,30
+H	T
+E1,32	
+T	H
+	E1,29
+	T
+	H
+	E1,28
+H	T
+E1,31	
+T	H
+H	E3,25
+W0,1	T
+E1,30	H
+T	W1,0
+	E5,20
+	T
+H	H
+W0,1	E2,18
+E5,25	T
+T	H
+	E5,13
+	T
+H	H
+	E5,8
+E2,23	T
+T	H
+	E1,7
+H	T
+E2,21	
+T	H
+H	E3,4
+E1,20	T
+T	H
+	E4,0
+...	F
+H	
+E1,19	
+T	
+H	
+E3,16	
+T	
+H	
+E5,11	
+T	
+H	
+E3,8	
+T	
+H	
+E2,6	
+T	
+H	
+E4,2	
+T	
+H	
+E2,0	
+F	...
+***********************
+Philosophers terminated
+[bbjunaid@linux024 ~/cs343/a5]$ ./phil 2 50 1make phil TYPE=INTexit[Kmake phil TYPE=INT[K[K[KAUTO
+rm -f ImplType
+touch q2table.h
+make phil TYPE="AUTO"
+make[1]: Entering directory `/u7/bbjunaid/cs343/a5'
+echo "IMPLTYPE=AUTO" > ImplType
+sleep 2
+make[1]: Leaving directory `/u7/bbjunaid/cs343/a5'
+make[1]: Entering directory `/u7/bbjunaid/cs343/a5'
+u++					 -g -Wall -Wno-unused-label -MMD -DTABLETYPE_AUTO   -c -o q2tableAUTO.o q2tableAUTO.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++					 -g -Wall -Wno-unused-label -MMD -DTABLETYPE_AUTO   -c -o q2table.o q2table.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++					 -g -Wall -Wno-unused-label -MMD -DTABLETYPE_AUTO   -c -o q2driver.o q2driver.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++					 -g -Wall -Wno-unused-label -MMD -DTABLETYPE_AUTO   -c -o q2phil.o q2phil.cc
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+u++					 -g -Wall -Wno-unused-label -MMD -DTABLETYPE_AUTO q2tableAUTO.o q2table.o q2printer.o q2driver.o q2phil.o -o phil
+uC++ Version 6.0.0 (single processor) (debug) (no yield) (no verify) (no profile)
+make[1]: Leaving directory `/u7/bbjunaid/cs343/a5'
+[bbjunaid@linux024 ~/cs343/a5]$ make phil TYPE=AUTO[6P./phil 2 50 1
+Phil0	Phil1
+******	******
+H	H
+	E3,47
+E1,49	T
+T	H
+H	
+E3,46	W1,0
+T	E5,42
+	T
+	H
+H	E2,40
+W0,1	T
+E4,42	
+T	H
+H	
+E3,39	W1,0
+T	E1,39
+	T
+H	H
+W0,1	E5,34
+E2,37	T
+T	
+H	
+E4,33	
+T	H
+	E3,31
+	T
+	H
+	E1,30
+H	T
+E1,32	
+T	H
+	E1,29
+	T
+	H
+	E1,28
+H	T
+E1,31	
+T	H
+H	E3,25
+W0,1	T
+E1,30	H
+T	W1,0
+	E5,20
+	T
+H	H
+W0,1	E2,18
+E5,25	T
+T	H
+	E5,13
+	T
+H	H
+	E5,8
+E2,23	T
+T	H
+	E1,7
+H	T
+E2,21	
+T	H
+H	E3,4
+E1,20	T
+T	H
+	E4,0
+...	F
+H	
+E1,19	
+T	
+H	
+E3,16	
+T	
+H	
+E5,11	
+T	
+H	
+E3,8	
+T	
+H	
+E2,6	
+T	
+H	
+E4,2	
+T	
+H	
+E2,0	
+F	...
+***********************
+Philosophers terminated
+[bbjunaid@linux024 ~/cs343/a5]$ exit
+exit
+
+Script done on Mon 18 Nov 2013 09:58:13 PM EST

@@ -1,0 +1,10 @@
+I could not finish question 3. I tried to document as much as I can in the time I had left.
+
+I tried it with the input '#' and '##'. I cannot run it with the utf8 file supplied as it goes in an infinite loop and I did not have enough time to debug this issue.
+
+I tried obtaining the unicode values of the input used in utf8 file but besides '#' I could not determine them. Basically I did not have tmie to find out why it went in an infinite loop.
+
+My code is wrong for sure, however I feel that I have some or most of the logic in there. There are some clean issues with how I am reading file inputs and this is blocking me.Please consider the code in q3.cc and the code that I have in there. 
+
+Thank you.
+Bilal.

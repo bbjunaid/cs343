@@ -1,0 +1,41 @@
+Script started on Wed 09 Oct 2013 08:26:41 PM EDT
+bbjunaid@linux024:~/cs343/a2$ ./q2m[Knomulti 10000000
+shared:17509347
+bbjunaid@linux024:~/cs343/a2$ ./q2nomulti 10000000
+shared:14939815
+bbjunaid@linux024:~/cs343/a2$ ./q2nomulti 10000000
+shared:20000000
+bbjunaid@linux024:~/cs343/a2$ ./q2nomulti 10000000
+shared:20000000
+bbjunaid@linux024:~/cs343/a2$ ./q2nomulti 10000000
+shared:20000000
+bbjunaid@linux024:~/cs343/a2$ ./q2nomulti 10000000
+shared:18011535
+bbjunaid@linux024:~/cs343/a2$ ./q2nomulti 10000000
+shared:15126751
+bbjunaid@linux024:~/cs343/a2$ ./q2nomulti 10000000
+shared:20000000
+bbjunaid@linux024:~/cs343/a2$ ./q2nomulti 10000000
+shared:20000000
+bbjunaid@linux024:~/cs343/a2$ ./q2nomulti 10000000
+shared:20000000
+bbjunaid@linux024:~/cs343/a2$ ./q2nomulti 10000000[C[C[Cmulti 10000000[Kmulti 10000000[K
+shared:12330903
+bbjunaid@linux024:~/cs343/a2$ ./q2multi 10000000
+shared:12394149
+bbjunaid@linux024:~/cs343/a2$ ./q2multi 10000000
+shared:12543887
+bbjunaid@linux024:~/cs343/a2$ ./q2multi 10000000
+shared:12334909
+bbjunaid@linux024:~/cs343/a2$ ./q2multi 10000000
+shared:10765361
+bbjunaid@linux024:~/cs343/a2$ ./q2multi 10000000
+shared:10590789
+bbjunaid@linux024:~/cs343/a2$ ./q2multi 10000000
+shared:10590754
+bbjunaid@linux024:~/cs343/a2$ ./q2multi 10000000
+shared:12445930
+bbjunaid@linux024:~/cs343/a2$ exit
+exit
+
+Script done on Wed 09 Oct 2013 08:27:10 PM EDT

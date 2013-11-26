@@ -1,0 +1,111 @@
+a) Here is the script output:
+
+     1  Script started on Wed 09 Oct 2013 08:26:41 PM EDT
+     2  bbjunaid@linux024:~/cs343/a2$ ./q2nomulti 10000000
+     3  shared:17509347
+     4  bbjunaid@linux024:~/cs343/a2$ ./q2nomulti 10000000
+     5  shared:14939815
+     6  bbjunaid@linux024:~/cs343/a2$ ./q2nomulti 10000000
+     7  shared:20000000
+     8  bbjunaid@linux024:~/cs343/a2$ ./q2nomulti 10000000
+     9  shared:20000000
+    10  bbjunaid@linux024:~/cs343/a2$ ./q2nomulti 10000000
+    11  shared:20000000
+    12  bbjunaid@linux024:~/cs343/a2$ ./q2nomulti 10000000
+    13  shared:18011535
+    14  bbjunaid@linux024:~/cs343/a2$ ./q2nomulti 10000000
+    15  shared:15126751
+    16  bbjunaid@linux024:~/cs343/a2$ ./q2nomulti 10000000
+    17  shared:20000000
+    18  bbjunaid@linux024:~/cs343/a2$ ./q2nomulti 10000000
+    19  shared:20000000
+    20  bbjunaid@linux024:~/cs343/a2$ ./q2nomulti 10000000
+    21  shared:20000000
+    22  bbjunaid@linux024:~/cs343/a2$ ./q2multi 10000000
+    23  shared:12330903
+    24  bbjunaid@linux024:~/cs343/a2$ ./q2multi 10000000
+    25  shared:12394149
+    26  bbjunaid@linux024:~/cs343/a2$ ./q2multi 10000000
+    27  shared:12543887
+    28  bbjunaid@linux024:~/cs343/a2$ ./q2multi 10000000
+    29  shared:12334909
+    30  bbjunaid@linux024:~/cs343/a2$ ./q2multi 10000000
+    31  shared:10765361
+    32  bbjunaid@linux024:~/cs343/a2$ ./q2multi 10000000
+    33  shared:10590789
+    34  bbjunaid@linux024:~/cs343/a2$ ./q2multi 10000000
+    35  shared:10590754
+    36  bbjunaid@linux024:~/cs343/a2$ ./q2multi 10000000
+    37  shared:12445930
+	38  bbjunaid@linux024:~/cs343/a2$ ./q2multi 10000000
+    39  shared:12584080
+	40  bbjunaid@linux024:~/cs343/a2$ ./q2multi 10000000
+    41  shared:12598834
+    42  bbjunaid@linux024:~/cs343/a2$ exit
+    43  exit
+    44
+    45  Script done on Wed 09 Oct 2013 08:27:10 PM EDT
+
+For uniprocessor:
+17509347
+14939815
+20000000
+20000000
+20000000
+18011535
+15126751
+20000000
+20000000
+20000000
+
+For multiprocessor:
+12330903
+12394149
+12543887
+12334909
+10765361
+10590789
+10590754
+12445930
+12584080
+12598834
+
+b) All 10 runs will not necessarily produce the same result for both uni and 
+multiprocessor versions. For the uniprocessor version, the following can happen which 
+will cause increments to shared to be lost:
+
+- a thread p1 is running and loads the value of shared in its register
+- the current thread p1 is scheduled out and another thread p2 from the ready queue runs 
+- p2 loads the value of shared in its register, increments the value,
+  and stores it back in shared
+- p2 is scheduled out and p1 runs. p1 loaded the previous unincremented value of shared
+  in its register and thus increments it. 
+- due to this, the increment of p2 is lost since only increment is an atomic instruction,
+  and not increment and store.
+  
+For the multiprocessor version, the same scenario can occur where p1 and p2 are running
+simultaneously. Since memory is shared, p1 could increment and store the value of shared,
+but it is possible that p2 had already stored the old value of shared in its register, and
+when it increments and assigns shared, the increment from p1 is lost
+
+c) In theory, the smallest possible value with an argument would be 1000000. 
+The worst case scenario is that the threads write to shared memory in such a 
+way that one of them always always loses its increment action. 
+Since the total number of increments is 20000000 and half the 
+increments will be lost in worst case, this results in 10000000.
+
+The best case is 20000000. This is when both threads access memory in such a 
+way that they only access the shared memory while the other thread is not using it.
+
+d) In the uniprocessor output, the occurences of 20000000 are quite a few 
+meaning that the scheduling worked in such a manner that both threads were able 
+to complete the increment and store instruction before getting contexed 
+switched out. Since the increment and store are small and fast, they can 
+happen within the time slice alotted to the thread and it is rare for context 
+switch to happen while the thread is in the middle of that set of instructions.
+
+On the other hand, for multiprocessors, it is very common for both threads 
+to be accessing the shared variable and performing store and increment on it at 
+the same time. Due to this, the increments are lost quite often and it is 
+almost impossible to get 20000000 from mutliprocessor output. Thus, due to the 
+large number of lost increments, the output is lower.

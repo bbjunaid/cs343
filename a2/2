@@ -1,0 +1,26 @@
+#include "q1potato.h"
+#include <iostream>
+
+using namespace std;
+
+/*
+    Given a minimum and maximum range, returns a random number in that range inclusive
+    of the min and max bounds
+*/
+unsigned int randr(int min, int max) {	
+	return rand() % max + min;
+}
+
+Potato::Potato( unsigned int maxTicks )
+	: m_maxTicks( maxTicks )
+{ }
+
+void Potato::reset( unsigned int maxTicks ) { 
+    m_numTicks = randr( 1, m_maxTicks ); 
+	cout << "  POTATO will go off after " << m_numTicks << " tosses" << std::endl;
+} 
+    
+bool Potato::countdown() { 
+	m_numTicks--; 
+    return m_numTicks > 0 ? false : true; 
+}
