@@ -12,6 +12,9 @@ void Bank::deposit( unsigned int id, unsigned int amount ) {
 
 // The courier waits until enough money has been deposited which may require multiple deposits
 void Bank::withdraw( unsigned int id, unsigned int amount ) {
+    for ( ; amount > m_accounts[id] ; ) {   // in a loop because one deposit might not satisfy amount
+        _Accept( deposit );
+    }
     m_accounts[id] -= amount;
 }
 

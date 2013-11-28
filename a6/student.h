@@ -13,7 +13,7 @@ _Task VendingMachine;
 _Task Student {
     void main();
   public:
-    Student( Printer &prt, NameServer &nameServer, WATCardOffice &cardOffice, unsigned int id, \
+    Student( Printer &prt, NameServer &nameServer, WATCardOffice &cardOffice, unsigned int id,
              unsigned int maxPurchases );
 
   private:
@@ -22,8 +22,6 @@ _Task Student {
     WATCardOffice &m_cardOffice;
     unsigned int m_id;
     unsigned int m_maxPurchases;
-    // The vending machine assigned by nameServer that purchases can be made from
-    VendingMachine* m_vendingMachine;   
 
 };
 

@@ -6,6 +6,7 @@
 #define _WATCARDOFFICE_H__
 
 #include "watcard.h"
+#include <vector>
 
 _Monitor Printer;
 _Monitor Bank;
@@ -29,7 +30,30 @@ _Task WATCardOffice {
     Printer &m_prt;
     Bank &m_bank;
     unsigned int m_numCouriers;
-    _Task Courier {};                       // communicates with bank
+    uCondition courier;
+    _Task Courier { // communicates with bank
+        void main() {
+            /*
+            for ( ;; ) {
+                m_prt.print( Printer::Courier, 'S' );
+                // Request work - may get blocked
+                Job* job = requestWork();
+
+                // Call deposit after a funds transfer
+                job->result.deposit( amount );
+                
+                // a courier can lose a student's watcard during the transfer for the new create
+                // There is a 1 in 6 chance WATCard is lost
+                if ( mprng( 1, 6 ) % 6 == 0 ) {
+                    job->result.exception( new Lost );
+                    // Delete current WATCard
+                }
+            }
+            m_prt.print( Printer::Courier, 'F' );         // Print finished message
+            */
+        }
+    };
+    std::vector<Courier *> couriers;
 };
 
 #endif // _WATCARDOFFICE_H__
