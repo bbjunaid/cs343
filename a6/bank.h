@@ -9,9 +9,11 @@
 
 _Monitor Bank {
     unsigned int m_numStudents;
+    uCondition* courier;
     std::vector<unsigned int> m_accounts;
   public:
     Bank( unsigned int numStudents );
+    ~Bank();
     void deposit( unsigned int id, unsigned int amount );
     void withdraw( unsigned int id, unsigned int amount );
 };
