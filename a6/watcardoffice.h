@@ -36,12 +36,16 @@ _Task WATCardOffice {
   private:
     Printer &m_prt;
     Bank &m_bank;
-    unsigned int m_numCouriers, m_sid, m_amount;
+    unsigned int m_numCouriers;
     WATCard *m_card;
     uCondition courier;
     std::queue<Job *> requests;
+    Job *m_newJob;
     _Task Courier { // communicates with bank
+        WATCardOffice &m_office;
         void main();
+      public:
+        Courier( WATCardOffice &office );
     };
     std::vector<Courier *> couriers;
 };

@@ -11,18 +11,16 @@ void WATCardOffice::main() {
     
     for ( ;; ) {
         _Accept( create ) {
-            Job *job = new Job( Args( m_sid, m_amount, new WATCard() ) );
-            requests.push( job );
+            requests.push( m_newJob );
             courier.signalBlock();
             // Print creation rendezvous complete
-            m_prt.print( Printer::WATCardOffice, 'C', m_sid, m_amount );
+            m_prt.print( Printer::WATCardOffice, 'C', m_newJob->args.sid, m_newJob->args.amount );
         } or 
         _Accept( transfer ) {
-            Job *job = new Job( Args( m_sid, m_amount, m_card ) );
-            requests.push( job );
+            requests.push( m_newJob );
             courier.signalBlock();
             // Print transfer rendezvous complete
-            m_prt.print( Printer::WATCardOffice, 'T', m_sid, m_amount );
+            m_prt.print( Printer::WATCardOffice, 'T', m_newJob->args.sid, m_newJob->args.amount );
         } or
         _Accept( requestWork ) {
             m_prt.print( Printer::WATCardOffice, 'W' );
@@ -38,23 +36,20 @@ WATCardOffice::WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers
 
     // Create courier tasks
     for ( unsigned int i; i < m_numCouriers; i += 1 ) {
-        couriers.push_back( new Courier );
+        couriers.push_back( new Courier( *this ) );
     }
 }
 
 WATCard::FWATCard WATCardOffice::create( unsigned int sid, unsigned int amount ) {
-    m_sid = sid;
-    m_amount = amount;
-    WATCard::FWATCard fCard;
-    return fCard;
+    Job *job = new Job( Args( sid, amount, new WATCard() ) );
+    m_newJob = job;
+    return job->result;
 }
 
 WATCard::FWATCard WATCardOffice::transfer( unsigned int sid, unsigned int amount, WATCard *card ) {
-    m_sid = sid;
-    m_amount = amount;
-    m_card = card;
-    WATCard::FWATCard fCard;
-    return fCard;
+    Job *job = new Job( Args( sid, amount, card ) ); 
+    m_newJob = job;
+    return job->result;
 }
 
 WATCardOffice::Job *WATCardOffice::requestWork() {
@@ -65,17 +60,19 @@ WATCardOffice::Job *WATCardOffice::requestWork() {
     return job;
 }
 
+WATCardOffice::Courier::Courier( WATCardOffice &office ) 
+: m_office(office) {}
+
 void WATCardOffice::Courier::main() {
-    //m_prt.print( Printer::Courier, 'S' );
+    m_office.m_prt.print( Printer::Courier, 'S' );
     for ( ;; ) {
         // Request work - may get blocked
-        Job* job;
-        // TODO Job* job = requestWork();
+        Job* job = m_office.requestWork();
 
         // Withdraw from the back
-        // TODO m_bank.withdraw( job->args.sid, job->args.amount );
+        m_office.m_bank.withdraw( job->args.sid, job->args.amount );
 
-        // Call deposit after a funds transfer
+        // Deposit after a funds transfer
         job->args.card->deposit( job->args.amount );
         
         // a courier can lose a student's watcard during the transfer for the new create
@@ -85,7 +82,8 @@ void WATCardOffice::Courier::main() {
             // Delete current WATCard
         }
         job->result.delivery( job->args.card );
+        // TODO exit condition?
     }
-    //m_prt.print( Printer::Courier, 'F' );         // Print finished message
+    m_office.m_prt.print( Printer::Courier, 'F' );         // Print finished message
 }
 
