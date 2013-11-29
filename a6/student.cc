@@ -43,13 +43,13 @@ void Student::main() {
     // Obtain the location of a vending machine from the name server
     // TODO m_vendingMachine = m_nameServer.getMachine( m_id );
     // Print vending machine selected
-    // TODO m_prt.print( Printer::Student, 'V', m_vendingMachine->getId() );
+    m_prt.print( Printer::Student, 'V', m_vendingMachine->getId() );
 
     for ( unsigned int i = 0; i < numBottles; i += 1 ) {
         yield( mprng( 1, 10 ) );
         for ( ;; ) {            // Loop until vending machine returns a status
             try {
-                // TODO buyStatus = m_vendingMachine->buy( favSoda, fCard() );  // Student buys favourite soda
+                buyStatus = m_vendingMachine->buy( favSoda, *fCard() );  // Student buys favourite soda
                 break;
             } catch ( WATCardOffice::Lost ) {
                 // Print WATCard lost message
@@ -62,16 +62,16 @@ void Student::main() {
         switch (buyStatus) {
             case VendingMachine::BUY:                                   // Successful buy
                 // Print bought a soda
-                // TODO m_prt.print( Printer::Student, 'B', fCard->getBalance() );
+                // TODO m_prt.print( Printer::Student, 'B', *fCard()->getBalance() );
                 break;
             case VendingMachine::STOCK:                                 // Out of stock
                 // Obtain a new vending machine from the name server
                 // TODO m_vendingMachine = m_nameServer.getMachine( m_id );
                 // Print vending machine selected
-                // TODO m_prt.print( Printer::Student, 'V', m_vendingMachine->getId() );
+                m_prt.print( Printer::Student, 'V', m_vendingMachine->getId() );
                 break;
             case VendingMachine::FUNDS:                                 // Insufficient funds
-                // TODO fCard = m_cardOffice.transfer( m_id, m_vendingMachine->cost() + 5, fCard );
+                fCard = m_cardOffice.transfer( m_id, m_vendingMachine->cost() + 5, fCard );
                 break;
         }
     }
