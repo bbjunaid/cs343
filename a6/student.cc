@@ -46,10 +46,10 @@ void Student::main() {
     // TODO m_prt.print( Printer::Student, 'V', m_vendingMachine->getId() );
 
     for ( unsigned int i = 0; i < numBottles; i += 1 ) {
+        yield( mprng( 1, 10 ) );
         for ( ;; ) {            // Loop until vending machine returns a status
             try {
                 // TODO buyStatus = m_vendingMachine->buy( favSoda, fCard() );  // Student buys favourite soda
-                yield( mprng( 1, 10 ) );
                 break;
             } catch ( WATCardOffice::Lost ) {
                 // Print WATCard lost message
