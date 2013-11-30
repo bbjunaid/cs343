@@ -1,6 +1,8 @@
 #ifndef _TRUCK_H__
 #define _TRUCK_H__
 
+#include "vendingmachine.h"
+
 // foward declarations
 _Monitor Printer;
 _Task NameServer;
@@ -18,6 +20,7 @@ _Task Truck {
     BottlingPlant &m_plant;
     unsigned int m_numVendingMachines;
     unsigned int m_maxStockPerFlavour;
+    unsigned int m_cargo[VendingMachine::NUM_FLAVOURS];
 };
 
 #endif // _TRUCK_H__

@@ -14,24 +14,32 @@ void BottlingPlant::main() {
 
     for ( ;; )
     {
-        // Yield before producing to simulate production
-        yield( m_timeBetweenShipments );
+        _Accept( ~BottlingPlant ) {
+            m_isClosing = true;
+            break;
+        } _Else {
+            // Yield before producing to simulate production
+            yield( m_timeBetweenShipments );
 
-        // Production
-        for ( unsigned int i = 0; i < m_numVendingMachines; i += 1 ){
-            m_cargo[i] = mprng( 1, m_maxShippedPerFlavour);
+            // Production
+            unsigned int bottles = 0;
+            for ( unsigned int i = 0; i < VendingMachine::NUM_FLAVOURS; i += 1 ){
+                m_cargo[i] = mprng( 0, m_maxShippedPerFlavour);
+                bottles += m_cargo[i];
+            }
+            m_prt.print( Printer::BottlingPlant, 'G', bottles );
         }
 
         _Accept( getShipment ) {
             m_prt.print( Printer::BottlingPlant, 'P' );       // Print shipment pickd up 
-        } or _Accept( ~BottlingPlant ) {
-            m_isClosing = true;
-            break;
-        }
+        } 
     }
-
     m_prt.print( Printer::BottlingPlant, 'F' );
 
+}
+
+BottlingPlant::~BottlingPlant() {
+    delete m_truck;
 }
 
 BottlingPlant::BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int numVendingMachines,
@@ -43,16 +51,15 @@ BottlingPlant::BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int
 , m_maxShippedPerFlavour( maxShippedPerFlavour )
 , m_maxStockPerFlavour( maxStockPerFlavour )
 , m_timeBetweenShipments( timeBetweenShipments )
-, m_cargo( new unsigned int[numVendingMachines] )
 , m_truck( new Truck( prt, nameServer, *this, numVendingMachines, maxStockPerFlavour ) ) 
 , m_isClosing(false) {}
 
 bool BottlingPlant::getShipment( unsigned int cargo[] ) {
     if ( !m_isClosing ) {
-        cargo = m_cargo;
+        for ( unsigned int i = 0; i < m_numVendingMachines; i++ )
+            cargo[i] = m_cargo[i];
         return false;
     }
-
     return true;
 }
 

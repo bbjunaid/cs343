@@ -6,10 +6,10 @@
 void VendingMachine::main() {
     // register with the nameServer
     m_nameServer.VMregister( this );
-    m_prt.print( Printer::Vending, 'c', m_sodaCost );
+    m_prt.print( Printer::Vending, m_id, 'c', m_sodaCost );
     for ( ;; ) {
         _Accept ( ~VendingMachine ) {
-            m_prt.print( Printer::Vending, 'F' );
+            m_prt.print( Printer::Vending, m_id, m_id, 'F' );
             break;
         } 
         or _When ( m_restocking ) _Accept( restocked );
@@ -27,7 +27,7 @@ VendingMachine::VendingMachine( Printer &prt, NameServer &nameServer, unsigned i
 , m_sodaCost( sodaCost )
 , m_maxStockPerFlavour( maxStockPerFlavour )
 , m_restocking(false) {
-    for ( unsigned int i = 0; i < 4; i += 1 ) {
+    for ( unsigned int i = 0; i < NUM_FLAVOURS; i += 1 ) {
         m_stockedSoda[i] = 0;
     }
 }
@@ -44,7 +44,7 @@ VendingMachine::Status VendingMachine::buy( Flavours flavour, WATCard &card ) {
 
     m_stockedSoda[(unsigned int)flavour] -= 1;
     card.withdraw( m_sodaCost );
-    m_prt.print( Printer::Vending, 'B', (unsigned int)flavour,\
+    m_prt.print( Printer::Vending, m_id, 'B', (unsigned int)flavour,\
                  m_stockedSoda[(unsigned int)flavour] );
     return BUY;
 }
@@ -52,13 +52,13 @@ VendingMachine::Status VendingMachine::buy( Flavours flavour, WATCard &card ) {
 // The truck calls inventory to return a pointer to an array containing the 
 // amount of each kind of soda currently in the vending machine
 unsigned int *VendingMachine::inventory() {
-    m_prt.print( Printer::Vending, 'r' );
+    m_prt.print( Printer::Vending, m_id, 'r' );
     m_restocking = true;
     return m_stockedSoda;
 }
 
 void VendingMachine::restocked() {
-    m_prt.print( Printer::Vending, 'R' );
+    m_prt.print( Printer::Vending, m_id, 'R' );
     m_restocking = false;
 }
 

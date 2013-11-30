@@ -1,6 +1,8 @@
 #ifndef _BOTTLINGPLANT_H__
 #define _BOTTLINGPLANT_H__
 
+#include "vendingmachine.h"
+
 // forward declarations
 _Monitor Printer;
 _Task NameServer;
@@ -12,6 +14,7 @@ _Task BottlingPlant {
     BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int numVendingMachines,
                  unsigned int maxShippedPerFlavour, unsigned int maxStockPerFlavour,
                  unsigned int timeBetweenShipments );
+    ~BottlingPlant();
     bool getShipment( unsigned int cargo[] );
 
   private:
@@ -21,7 +24,7 @@ _Task BottlingPlant {
     unsigned int m_maxShippedPerFlavour;
     unsigned int m_maxStockPerFlavour;
     unsigned int m_timeBetweenShipments;
-    unsigned int* m_cargo;
+    unsigned int m_cargo[VendingMachine::NUM_FLAVOURS];
     Truck *m_truck; 
     bool m_isClosing;
 };
