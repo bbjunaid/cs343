@@ -12,8 +12,10 @@ void VendingMachine::main() {
             m_prt.print( Printer::Vending, 'F' );
             break;
         } 
-        if ( m_restocking ) _Accept( restocked );
-        else _Accept( buy, inventory );
+        or _When ( m_restocking ) _Accept( restocked );
+        _Else { 
+            _Accept( buy, inventory );
+        }
     }
 }
 
