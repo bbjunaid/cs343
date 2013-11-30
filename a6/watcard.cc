@@ -14,7 +14,7 @@ void WATCard::deposit( unsigned int amount ) {
     m_balance += amount;
 }
 
-// A cending machine calls withdraw when a soda is purchased
+// A vending machine calls withdraw when a soda is purchased
 void WATCard::withdraw( unsigned int amount ) {
     m_balance -= amount;
 }

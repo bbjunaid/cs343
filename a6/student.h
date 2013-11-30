@@ -20,8 +20,8 @@ _Task Student {
     Printer &m_prt;
     NameServer &m_nameServer;
     WATCardOffice &m_cardOffice;
-    unsigned int m_id;
-    unsigned int m_maxPurchases;
+    unsigned int m_id;                      // Student id
+    unsigned int m_maxPurchases;            // Maximum number of purchases allowed for all students
 
 };
 
