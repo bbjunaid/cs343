@@ -36,6 +36,7 @@ void Student::main() {
 
     // Obtain the location of a vending machine from the name server
     // TODO m_vendingMachine = m_nameServer.getMachine( m_id );
+    m_vendingMachine = m_nameServer.getMachine( m_id );
     // Print vending machine selected
     m_prt.print( Printer::Student, 'V', m_vendingMachine->getId() );    
 
