@@ -17,6 +17,8 @@ _Task NameServer {
     Printer &m_prt;
     unsigned int m_numVendingMachines;
     unsigned int m_numStudents;
+    unsigned int m_numRegisteredMachines;
+    VendingMachine** m_registeredMachines;
 };
 
 #endif // _NAMESERVER_H__

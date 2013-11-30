@@ -9,9 +9,12 @@ class WATCard;
 _Task VendingMachine {
     void main();
   public:
-    enum Flavours { BLACK_CHERRY, CREAM_SODA, ROOT_BEER, JAZZ_LIME };                 // flavours of sodas
-    enum Status { BUY, STOCK, FUNDS };     // purchase status: successful buy, out of stock, insufficient funds
-    VendingMachine( Printer &prt, NameServer &nameServer, unsigned int id, unsigned int sodaCost, unsigned int maxStockPerFlavour );
+    // flavours of sodas
+    enum Flavours { BLACK_CHERRY, CREAM_SODA, ROOT_BEER, JAZZ_LIME };
+    // purchase status: successful buy, out of stock, insufficient funds
+    enum Status { BUY, STOCK, FUNDS };     
+    VendingMachine( Printer &prt, NameServer &nameServer, unsigned int id,\
+                    unsigned int sodaCost, unsigned int maxStockPerFlavour );
     Status buy( Flavours flavour, WATCard &card );
     unsigned int *inventory();
     void restocked();
