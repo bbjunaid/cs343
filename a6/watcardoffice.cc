@@ -66,21 +66,26 @@ WATCardOffice::Courier::Courier( WATCardOffice &office )
 void WATCardOffice::Courier::main() {
     m_office.m_prt.print( Printer::Courier, 'S' );
     for ( ;; ) {
-        // Request work - may get blocked
-        Job* job = m_office.requestWork();
-
-        // Withdraw from the back
-        m_office.m_bank.withdraw( job->args.sid, job->args.amount );
-
-        // Deposit after a funds transfer
-        job->args.card->deposit( job->args.amount );
-        
-        if ( mprng( 1, 6 ) % 6 == 0 ) {                     // There is a 1 in 6 chance WATCard is lost
-            job->result.exception( new Lost );              // Insert Lost exception intor student's WATCard
-            delete job->args.card;                          // Delete current WATCard
+        _Accept( ~Courier ) {
+            break;
         }
-        else {
-            job->result.delivery( job->args.card );         // Deliver future upon a successful transfer of funds
+        _Else {
+            // Request work - may get blocked
+            Job* job = m_office.requestWork();
+
+            // Withdraw from the back
+            m_office.m_bank.withdraw( job->args.sid, job->args.amount );
+
+            // Deposit after a funds transfer
+            job->args.card->deposit( job->args.amount );
+            
+            if ( mprng( 1, 6 ) % 6 == 0 ) {                     // There is a 1 in 6 chance WATCard is lost
+                job->result.exception( new Lost );              // Insert Lost exception intor student's WATCard
+                delete job->args.card;                          // Delete current WATCard
+            }
+            else {
+                job->result.delivery( job->args.card );         // Deliver future upon a successful transfer of funds
+            }
         }
     }
     m_office.m_prt.print( Printer::Courier, 'F' );          // Print finished message
