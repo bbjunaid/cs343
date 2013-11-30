@@ -4,6 +4,7 @@
 // forward declarations
 _Monitor Printer;
 _Task NameServer;
+_Task Truck;
 
 _Task BottlingPlant {
     void main();
@@ -14,12 +15,15 @@ _Task BottlingPlant {
     bool getShipment( unsigned int cargo[] );
 
   private:
-    Printer &m_ptr;
+    Printer &m_prt;
     NameServer &m_nameServer;
     unsigned int m_numVendingMachines;
-    unsigned int m_maxShipperPerFlavour;
+    unsigned int m_maxShippedPerFlavour;
     unsigned int m_maxStockPerFlavour;
     unsigned int m_timeBetweenShipments;
+    unsigned int* m_cargo;
+    Truck *m_truck; 
+    bool m_isClosing;
 };
 
 #endif // _BOTTLINGPLANT_H__
