@@ -12,13 +12,13 @@ void WATCardOffice::main() {
     for ( ;; ) {
         _Accept( create ) {
             requests.push( m_newJob );
-            courier.signalBlock();
+            courier.signal();
             // Print creation rendezvous complete
             m_prt.print( Printer::WATCardOffice, 'C', m_newJob->args.sid, m_newJob->args.amount );
         } or 
         _Accept( transfer ) {
             requests.push( m_newJob );
-            courier.signalBlock();
+            courier.signal();
             // Print transfer rendezvous complete
             m_prt.print( Printer::WATCardOffice, 'T', m_newJob->args.sid, m_newJob->args.amount );
         } or
@@ -31,12 +31,13 @@ void WATCardOffice::main() {
     m_prt.print( Printer::WATCardOffice, 'F' );
 }
 
-WATCardOffice::WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers ) : 
-    m_prt(prt), m_bank(bank), m_numCouriers(numCouriers) {
+WATCardOffice::WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers ) 
+: m_prt(prt)
+, m_bank(bank)
+, m_numCouriers(numCouriers) {
 
-    // Create courier tasks
     for ( unsigned int i; i < m_numCouriers; i += 1 ) {
-        couriers.push_back( new Courier( *this ) );
+        couriers.push_back( new Courier( *this ) );         // Create courier tasks
     }
 }
 
@@ -53,8 +54,7 @@ WATCard::FWATCard WATCardOffice::transfer( unsigned int sid, unsigned int amount
 }
 
 WATCardOffice::Job *WATCardOffice::requestWork() {
-    // Block courier until a job is ready
-    courier.wait();
+    courier.wait();                 // Block courier until a job is ready
     Job* job = requests.front();
     requests.pop();
     return job;
@@ -75,15 +75,14 @@ void WATCardOffice::Courier::main() {
         // Deposit after a funds transfer
         job->args.card->deposit( job->args.amount );
         
-        // a courier can lose a student's watcard during the transfer for the new create
-        // There is a 1 in 6 chance WATCard is lost
-        if ( mprng( 1, 6 ) % 6 == 0 ) {
-            job->result.exception( new Lost );
-            // Delete current WATCard
+        if ( mprng( 1, 6 ) % 6 == 0 ) {                     // There is a 1 in 6 chance WATCard is lost
+            job->result.exception( new Lost );              // Insert Lost exception intor student's WATCard
+            delete job->args.card;                          // Delete current WATCard
         }
-        job->result.delivery( job->args.card );
-        // TODO exit condition?
+        else {
+            job->result.delivery( job->args.card );         // Deliver future upon a successful transfer of funds
+        }
     }
-    m_office.m_prt.print( Printer::Courier, 'F' );         // Print finished message
+    m_office.m_prt.print( Printer::Courier, 'F' );          // Print finished message
 }
 

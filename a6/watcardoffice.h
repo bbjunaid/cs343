@@ -41,7 +41,7 @@ _Task WATCardOffice {
     uCondition courier;
     std::queue<Job *> requests;
     Job *m_newJob;
-    _Task Courier { // communicates with bank
+    _Task Courier {                 // Worker tasks transfers funds from bank to student's watcard on behalf of the office
         WATCardOffice &m_office;
         void main();
       public:
