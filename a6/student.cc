@@ -29,14 +29,14 @@ void Student::main() {
     favSoda = (VendingMachine::Flavours)mprng( 3 );   // Select a random flavour
     
 
-    m_prt.print( Printer::Student, 'S', favSoda, numBottles );  // Print student start message
+    m_prt.print( Printer::Student, m_id, 'S', favSoda, numBottles );  // Print student start message
     fCard = m_cardOffice.create( m_id, 5 ); // Create a WATCard via the WATCardOffice with a $5 balance 
 
     // Obtain the location of a vending machine from the name server
-    // TODO m_vendingMachine = m_nameServer.getMachine( m_id );
+    m_vendingMachine = m_nameServer.getMachine( m_id );
     m_vendingMachine = m_nameServer.getMachine( m_id );
     // Print vending machine selected
-    m_prt.print( Printer::Student, 'V', m_vendingMachine->getId() );    
+    m_prt.print( Printer::Student, m_id, 'V', m_vendingMachine->getId() );    
 
     // Periodically buy favourite soda
     unsigned int numPurchased = 0;                      // Counter for number of successful purchases
@@ -47,7 +47,7 @@ void Student::main() {
                 buyStatus = m_vendingMachine->buy( favSoda, *fCard() );  // Attempt to buy favourite soda
                 break;                                  // If no exception thrown, move on to to examine purchase status
             } catch ( WATCardOffice::Lost ) {
-                m_prt.print( Printer::Student, 'L' );   // Print WATCard lost message
+                m_prt.print( Printer::Student, m_id, 'L' );   // Print WATCard lost message
                 fCard = m_cardOffice.create( m_id, 5 ); // Create a new WATCard via the WATCardOffice with a $5 balance
             }
         }
@@ -55,11 +55,11 @@ void Student::main() {
         switch (buyStatus) {
             case VendingMachine::BUY:                   // Successful buy
                 numPurchased += 1;                      // Indicate a successful purchase
-                m_prt.print( Printer::Student, 'B', fCard()->getBalance() );       // Print bought a soda
+                m_prt.print( Printer::Student, m_id, 'B', fCard()->getBalance() );       // Print bought a soda
                 break;
             case VendingMachine::STOCK:                 // Out of stock
-                 m_vendingMachine = m_nameServer.getMachine( m_id ); // Obtain a new vending machine from the name server
-                m_prt.print( Printer::Student, 'V', m_vendingMachine->getId() );    // Print vending machine selected
+                m_vendingMachine = m_nameServer.getMachine( m_id ); // Obtain a new vending machine from the name server
+                m_prt.print( Printer::Student, m_id, 'V', m_vendingMachine->getId() );    // Print vending machine selected
                 break;
             case VendingMachine::FUNDS:                 // Insufficient funds
                 fCard = m_cardOffice.transfer( m_id, m_vendingMachine->cost() + 5, fCard() );
@@ -71,4 +71,4 @@ void Student::main() {
     m_prt.print( Printer::Student, 'F');    // Student finished purchasing
                                             // Print finished
 }
-
+ 
