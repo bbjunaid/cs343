@@ -1,13 +1,13 @@
 #include "bank.h"
 
-Bank::Bank( unsigned int numStudents ) : m_numStudents(numStudents) {
-    // TODO create a vector unsigned ints for students
+Bank::Bank( unsigned int numStudents ) 
+: m_numStudents(numStudents) {
     m_accounts.resize(numStudents);
     courier = new uCondition[m_numStudents];
 }
 
 Bank::~Bank() {
-   delete [] courier; 
+   delete[] courier; 
 }
 
 // The parent calls deposit to endow gifts to a specific student

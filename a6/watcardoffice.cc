@@ -11,13 +11,13 @@ void WATCardOffice::main() {
     
     for ( ;; ) {
         _Accept( create ) {
-            requests.push( m_newJob );
-            courier.signal();
+            m_requests.push( m_newJob );
+            courier.signalBlock();
             // Print creation rendezvous complete
             m_prt.print( Printer::WATCardOffice, 'C', m_newJob->args.sid, m_newJob->args.amount );
         } or 
         _Accept( transfer ) {
-            requests.push( m_newJob );
+            m_requests.push( m_newJob );
             courier.signal();
             // Print transfer rendezvous complete
             m_prt.print( Printer::WATCardOffice, 'T', m_newJob->args.sid, m_newJob->args.amount );
@@ -27,7 +27,6 @@ void WATCardOffice::main() {
         }
 
     }
-
     m_prt.print( Printer::WATCardOffice, 'F' );
 }
 
@@ -35,10 +34,14 @@ WATCardOffice::WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers
 : m_prt(prt)
 , m_bank(bank)
 , m_numCouriers(numCouriers) {
-
     for ( unsigned int i; i < m_numCouriers; i += 1 ) {
-        couriers.push_back( new Courier( *this ) );         // Create courier tasks
+        couriers[i] = new Courier( i, *this );
     }
+}
+
+WATCardOffice::~WATCardOffice() {
+    for( unsigned int i; i < m_numCouriers; i++ )
+        delete couriers[i];
 }
 
 WATCard::FWATCard WATCardOffice::create( unsigned int sid, unsigned int amount ) {
@@ -55,16 +58,23 @@ WATCard::FWATCard WATCardOffice::transfer( unsigned int sid, unsigned int amount
 
 WATCardOffice::Job *WATCardOffice::requestWork() {
     courier.wait();                 // Block courier until a job is ready
-    Job* job = requests.front();
-    requests.pop();
+    Job* job = m_requests.front();
+    m_requests.pop();
     return job;
 }
 
-WATCardOffice::Courier::Courier( WATCardOffice &office ) 
-: m_office(office) {}
+
+//-----------------------------------------------------------------------------
+// Implmentation of Courier Task
+//-----------------------------------------------------------------------------
+
+WATCardOffice::Courier::Courier( unsigned int id, WATCardOffice &office ) 
+: m_office(office)
+, m_id( id )
+{}
 
 void WATCardOffice::Courier::main() {
-    m_office.m_prt.print( Printer::Courier, 'S' );
+    m_office.m_prt.print( Printer::Courier, m_id, 'S' );
     for ( ;; ) {
         _Accept( ~Courier ) {
             break;
@@ -86,8 +96,9 @@ void WATCardOffice::Courier::main() {
             else {
                 job->result.delivery( job->args.card );         // Deliver future upon a successful transfer of funds
             }
+            delete job;
         }
     }
-    m_office.m_prt.print( Printer::Courier, 'F' );          // Print finished message
+    m_office.m_prt.print( Printer::Courier, m_id, 'F' );          // Print finished message
 }
 

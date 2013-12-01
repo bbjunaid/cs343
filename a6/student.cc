@@ -15,9 +15,7 @@ Student::Student( Printer &prt, NameServer &nameServer, WATCardOffice &cardOffic
 , m_nameServer(nameServer)
 , m_cardOffice(cardOffice)
 , m_id(id)
-, m_maxPurchases(maxPurchases) {
-    
-}
+, m_maxPurchases(maxPurchases) {}
 
 void Student::main() {
     
@@ -60,7 +58,7 @@ void Student::main() {
                 m_prt.print( Printer::Student, 'B', fCard()->getBalance() );       // Print bought a soda
                 break;
             case VendingMachine::STOCK:                 // Out of stock
-                // TODO m_vendingMachine = m_nameServer.getMachine( m_id ); // Obtain a new vending machine from the name server
+                 m_vendingMachine = m_nameServer.getMachine( m_id ); // Obtain a new vending machine from the name server
                 m_prt.print( Printer::Student, 'V', m_vendingMachine->getId() );    // Print vending machine selected
                 break;
             case VendingMachine::FUNDS:                 // Insufficient funds
@@ -69,6 +67,7 @@ void Student::main() {
         }
     }
 
+    delete fCard();     // delete the WATcard contained in the future which was allocated dynamically
     m_prt.print( Printer::Student, 'F');    // Student finished purchasing
                                             // Print finished
 }
