@@ -87,6 +87,11 @@ void uMain::main() {
         students[id] = new Student( prt, nameServer, cardOffice, id, cparams.maxPurchases );
     }
 
+    // finish Student tasks
+    for ( id = 0; id < cparams.numStudents; id++ ) {
+        delete students[id];
+    }
+
     // delete bottling plant before vending machines to avoid deadlock
     delete bottPlant;
     
@@ -94,13 +99,5 @@ void uMain::main() {
     for ( id = 0; id < cparams.numVendingMachines; id++ ) {
         delete vendingMachines[id];
     }
-
-    // finish Student tasks
-    for ( id = 0; id < cparams.numStudents; id++ ) {
-        delete students[id];
-    }
-
-    // Mahdi comment
-    cout << "***********************" << endl;
 }
 
