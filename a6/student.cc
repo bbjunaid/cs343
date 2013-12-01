@@ -34,7 +34,6 @@ void Student::main() {
 
     // Obtain the location of a vending machine from the name server
     m_vendingMachine = m_nameServer.getMachine( m_id );
-    m_vendingMachine = m_nameServer.getMachine( m_id );
     // Print vending machine selected
     m_prt.print( Printer::Student, m_id, 'V', m_vendingMachine->getId() );    
 
@@ -48,6 +47,7 @@ void Student::main() {
                 break;                                  // If no exception thrown, move on to to examine purchase status
             } catch ( WATCardOffice::Lost ) {
                 m_prt.print( Printer::Student, m_id, 'L' );   // Print WATCard lost message
+                fCard.reset();
                 fCard = m_cardOffice.create( m_id, 5 ); // Create a new WATCard via the WATCardOffice with a $5 balance
             }
         }
@@ -68,7 +68,7 @@ void Student::main() {
     }
 
     delete fCard();     // delete the WATcard contained in the future which was allocated dynamically
-    m_prt.print( Printer::Student, 'F');    // Student finished purchasing
+    m_prt.print( Printer::Student, m_id, 'F');    // Student finished purchasing
                                             // Print finished
 }
  

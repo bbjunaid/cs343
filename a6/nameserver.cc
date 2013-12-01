@@ -24,7 +24,8 @@ void NameServer::main() {
             m_prt.print( Printer::NameServer, 'N', m_requestingStudent, m_tempMachine->getId() );
             m_studentTurns[m_requestingStudent] = \
                 ( m_studentTurns[m_requestingStudent] + 1 ) % m_numVendingMachines;
-        }
+        } 
+        or _Accept ( getMachineList ) {};
     } 
     m_prt.print( Printer::NameServer, 'F' );
 }

@@ -79,7 +79,7 @@ void uMain::main() {
     // create VendingMachine tasks
     for ( id = 0; id < cparams.numVendingMachines; id++ ) {
         vendingMachines[id] = new VendingMachine( prt, nameServer, id, cparams.sodaCost, \
-                                                 cparams.maxStockPerFlavour );
+                                                  cparams.maxStockPerFlavour );
     }
 
     // create Student tasks
@@ -94,7 +94,7 @@ void uMain::main() {
 
     // delete bottling plant before vending machines to avoid deadlock
     delete bottPlant;
-    
+
     // finish VendingMachines tasks
     for ( id = 0; id < cparams.numVendingMachines; id++ ) {
         delete vendingMachines[id];

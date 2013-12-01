@@ -43,13 +43,18 @@ Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, uns
     cout << endl;
 }
 
+Printer::~Printer() {
+    cout << "Printer destructor" << endl;
+}
+
 void Printer::print( Kind kind, char state ) {
     if ( state == 'F' ) {
         m_finishedCnt++;
         if ( m_isBufferEmpty == false ) {
             flush();
         }
-        flushFinished( getGlobalId( kind ) );
+        int id = getGlobalId( kind );
+        flushFinished( id );
         clear();
         return;
     }

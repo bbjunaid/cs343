@@ -8,7 +8,6 @@ _Task Parent {
     void main();
   public:
     Parent( Printer &prt, Bank &bank, unsigned int numStudents, unsigned int parentalDelay );
-    ~Parent();
 
   private:
     Printer &m_prt;

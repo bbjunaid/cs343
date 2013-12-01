@@ -10,10 +10,7 @@ void VendingMachine::main() {
     for ( ;; ) {
         _Accept ( ~VendingMachine ) {
             break;
-        } 
-        or _When ( m_restocking ) _Accept( restocked ) {
-        } _Else { 
-            _Accept( buy, inventory );
+        } or _Accept( inventory, buy, restocked ){
         }
     }
     m_prt.print( Printer::Vending, m_id, 'F' );
@@ -53,13 +50,11 @@ VendingMachine::Status VendingMachine::buy( Flavours flavour, WATCard &card ) {
 // amount of each kind of soda currently in the vending machine
 unsigned int *VendingMachine::inventory() {
     m_prt.print( Printer::Vending, m_id, 'r' );
-    m_restocking = true;
     return m_stockedSoda;
 }
 
 void VendingMachine::restocked() {
     m_prt.print( Printer::Vending, m_id, 'R' );
-    m_restocking = false;
 }
 
 _Nomutex unsigned int VendingMachine::cost() {

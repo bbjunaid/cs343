@@ -22,6 +22,7 @@ void Parent::main() {
         }
     }
     m_prt.print( Printer::Parent, 'F' );
+    osacquire( cout ) << "Parent finished" << endl;
 }
 
 Parent::Parent( Printer &prt, Bank &bank, unsigned int numStudents, unsigned int parentalDelay ) 
@@ -29,6 +30,3 @@ Parent::Parent( Printer &prt, Bank &bank, unsigned int numStudents, unsigned int
 , m_bank(bank)
 , m_numStudents(numStudents)
 , m_parentalDelay(parentalDelay) {}
-
-Parent::~Parent() {}
-

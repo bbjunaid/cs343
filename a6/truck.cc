@@ -23,6 +23,7 @@ void Truck::main() {
         if ( m_plant.getShipment( m_cargo ) )
             break;
 
+        sodasInShipment = 0;
         for ( unsigned int i = 0; i < VendingMachine::NUM_FLAVOURS; i++ )
             sodasInShipment += m_cargo[i];  
 
@@ -44,9 +45,10 @@ void Truck::main() {
                     sodasInShipment -= 1;
                 }
                 bottlesNotReplenished += ( m_maxStockPerFlavour - machineInventory[j] );
-            }  
-            m_prt.print( Printer::Truck, 'B', i, bottlesNotReplenished );
-            m_prt.print( Printer::Truck, 'D', sodasInShipment );
+            }
+            m_prt.print( Printer::Truck, 'U', i, bottlesNotReplenished );
+            m_prt.print( Printer::Truck, 'D', i, sodasInShipment );
+            machineList[i]->restocked();
         } 
     }
 

@@ -16,6 +16,9 @@ void BottlingPlant::main() {
     {
         _Accept( ~BottlingPlant ) {
             m_isClosing = true;
+            _Accept( getShipment ) {
+                delete m_truck;
+            }
             break;
         } _Else {
             // Yield before producing to simulate production
@@ -35,11 +38,6 @@ void BottlingPlant::main() {
         } 
     }
     m_prt.print( Printer::BottlingPlant, 'F' );
-
-}
-
-BottlingPlant::~BottlingPlant() {
-    delete m_truck;
 }
 
 BottlingPlant::BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int numVendingMachines,
@@ -56,7 +54,7 @@ BottlingPlant::BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int
 
 bool BottlingPlant::getShipment( unsigned int cargo[] ) {
     if ( !m_isClosing ) {
-        for ( unsigned int i = 0; i < m_numVendingMachines; i++ )
+        for ( unsigned int i = 0; i < VendingMachine::NUM_FLAVOURS; i++ )
             cargo[i] = m_cargo[i];
         return false;
     }

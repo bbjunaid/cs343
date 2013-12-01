@@ -30,11 +30,13 @@ _Task WATCardOffice {
     _Task Courier {                 // Worker tasks transfers funds from bank to student's watcard on behalf of the office
         void main();
       public:
-        Courier( unsigned int id, WATCardOffice &office );
+        Courier( unsigned int id, WATCardOffice &office, Printer &prt, Bank &bank );
 
       private:
-        WATCardOffice &m_office;
         unsigned int m_id;
+        WATCardOffice &m_office;
+        Printer &m_prt;
+        Bank &m_bank;
     };
 
     void main();
@@ -51,7 +53,6 @@ _Task WATCardOffice {
     Bank &m_bank;
     unsigned int m_numCouriers;
     WATCard *m_card;
-    uCondition courier;
     std::queue<Job *> m_requests;
     Job *m_newJob;
     std::vector<Courier*> couriers;

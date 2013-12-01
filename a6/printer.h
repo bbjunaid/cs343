@@ -1,6 +1,9 @@
 #ifndef _PRINTER_H__
 #define _PRINTER_H__
 
+#include <iostream>         // cin, cout, endl
+using namespace std;
+
 #include <vector>
 
 _Monitor Printer {
@@ -13,7 +16,8 @@ _Monitor Printer {
     void print( Kind kind, unsigned int lid, char state );
     void print( Kind kind, unsigned int lid, char state, int value1 );
     void print( Kind kind, unsigned int lid, char state, int value1, int value2 );
-
+    ~Printer();
+    
   private:
     struct buffer {
         char state;
