@@ -1,12 +1,5 @@
 #include "watcard.h"
 
-WATCard::WATCard( const WATCard & ) {            // prevent copying
-}
-
-/*WATCard& WATCard::operator=( const WATCard & ) {
-}*/
-
-
 WATCard::WATCard() : m_balance(0) { }
 
 // The courier call deposit after a funds transfer
