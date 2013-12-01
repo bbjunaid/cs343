@@ -4,7 +4,7 @@
 #include "watcard.h"
 
 void VendingMachine::main() {
-    m_prt.print( Printer::Vending, 'S', m_sodaCost );
+    m_prt.print( Printer::Vending, m_id, 'S', m_sodaCost );
     // register with the nameServer
     m_nameServer.VMregister( this );
     for ( ;; ) {
@@ -16,7 +16,7 @@ void VendingMachine::main() {
             _Accept( buy, inventory );
         }
     }
-    m_prt.print( Printer::Vending, m_id, m_id, 'F' );
+    m_prt.print( Printer::Vending, m_id, 'F' );
 }
 
 VendingMachine::VendingMachine( Printer &prt, NameServer &nameServer, unsigned int id,\

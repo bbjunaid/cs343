@@ -96,13 +96,13 @@ void Printer::print( Kind kind, unsigned int lid, char state ) {
 
 void Printer::print( Kind kind, unsigned int lid, char state, int value1 ) {
     print( kind, lid, state );
-    m_buffer[getGlobalId( kind )].value1 = value1;
+    m_buffer[getGlobalId( kind, lid )].value1 = value1;
 }
 
 void Printer::print( Kind kind, unsigned int lid, char state, int value1, int value2 ) {
     print( kind, lid, state );
-    m_buffer[getGlobalId( kind )].value1 = value1;
-    m_buffer[getGlobalId( kind )].value2 = value2;
+    m_buffer[getGlobalId( kind, lid )].value1 = value1;
+    m_buffer[getGlobalId( kind, lid )].value2 = value2;
 }
 
 unsigned int Printer::getGlobalId( Kind kind ) {
@@ -110,14 +110,19 @@ unsigned int Printer::getGlobalId( Kind kind ) {
     switch( kind ) {
         case Parent:
             id = 0;
+            break;
         case WATCardOffice:
             id = 1;
+            break;
         case NameServer:
             id = 2;
+            break;
         case Truck:
             id = 3;
+            break;
         case BottlingPlant:
             id = 4;
+            break;
         default:
             break;
     }
@@ -139,7 +144,6 @@ unsigned int Printer::getGlobalId( Kind kind, unsigned int lid ) {
         default:
             break;
     }
-
     return id;
 }
 
