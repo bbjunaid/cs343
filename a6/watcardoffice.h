@@ -7,6 +7,7 @@
 
 #include "watcard.h"
 #include <queue>
+#include <vector>
 
 _Monitor Printer;
 _Monitor Bank;
@@ -53,7 +54,7 @@ _Task WATCardOffice {
     uCondition courier;
     std::queue<Job *> m_requests;
     Job *m_newJob;
-    Courier** couriers;
+    std::vector<Courier*> couriers;
 };
 
 #endif // _WATCARDOFFICE_H__

@@ -16,7 +16,6 @@ void NameServer::main() {
 
     for ( ;; ) {
         _Accept ( ~NameServer ) {
-            m_prt.print( Printer::NameServer, 'F' );
             break;
         } 
         // Print student requesting new machine and assign the next machine index the student
@@ -27,6 +26,7 @@ void NameServer::main() {
                 ( m_studentTurns[m_requestingStudent] + 1 ) % m_numVendingMachines;
         }
     } 
+    m_prt.print( Printer::NameServer, 'F' );
 }
 
 NameServer::NameServer( Printer &prt, unsigned int numVendingMachines, unsigned int numStudents )

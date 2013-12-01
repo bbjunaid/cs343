@@ -4,19 +4,19 @@
 #include "watcard.h"
 
 void VendingMachine::main() {
+    m_prt.print( Printer::Vending, 'S', m_sodaCost );
     // register with the nameServer
     m_nameServer.VMregister( this );
-    m_prt.print( Printer::Vending, m_id, 'c', m_sodaCost );
     for ( ;; ) {
         _Accept ( ~VendingMachine ) {
-            m_prt.print( Printer::Vending, m_id, m_id, 'F' );
             break;
         } 
-        or _When ( m_restocking ) _Accept( restocked );
-        _Else { 
+        or _When ( m_restocking ) _Accept( restocked ) {
+        } _Else { 
             _Accept( buy, inventory );
         }
     }
+    m_prt.print( Printer::Vending, m_id, m_id, 'F' );
 }
 
 VendingMachine::VendingMachine( Printer &prt, NameServer &nameServer, unsigned int id,\

@@ -34,8 +34,9 @@ WATCardOffice::WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers
 : m_prt(prt)
 , m_bank(bank)
 , m_numCouriers(numCouriers) {
+    couriers.resize( numCouriers );
     for ( unsigned int i; i < m_numCouriers; i += 1 ) {
-        couriers[i] = new Courier( i, *this );
+        couriers.push_back( new Courier( i, *this ) );
     }
 }
 
