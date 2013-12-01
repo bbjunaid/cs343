@@ -12,6 +12,8 @@
 #include "bottlingplant.h"
 #include "student.h"
 
+#include <unistd.h>         // getpid()
+
 using namespace std;
 
 MPRNG mprng;               // global random number generator used in other files
@@ -25,8 +27,8 @@ void usage( char *argv[] ) {
 
 void uMain::main() {
     ConfigParms cparams;
-    string configFile;
-    int seed;
+    string configFile = "soda.config";
+    int seed = getpid();
 
     // Error for extra arguments
 	if ( argc > 3 ) {
@@ -42,15 +44,14 @@ void uMain::main() {
         // FALL THROUGH
       case 2:                       // verify numConsultations >= 0
         configFile = argv[1]; 
-        if ( configFile.empty() ) 
-            configFile = "soda.config";
         break;
       case 1:                       // no arguments, that's ok
-        configFile = "soda.config";
         break;
       default:						// wrong number of options
 		usage( argv );
     } // switch 
+
+    mprng.seed( seed );
 
     processConfigFile( configFile.c_str(), cparams );
 
