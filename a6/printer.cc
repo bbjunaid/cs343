@@ -34,6 +34,7 @@ Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, uns
         cout << "Cour" << id << "\t";
         m_buffer[5 + numStudents + numVendingMachines + id].kind = Courier;
     }
+    cout << endl;
 
     for ( id = 0; id < NUM_TASK_TOTAL; id += 1 ) {
         cout << "*******" << "\t";
@@ -201,7 +202,7 @@ void Printer::flush() {
                 }
                 break;
         }
-        if ( id < NUM_TASK_TOTAL -1 ) cout << "\t";
+        if ( id < NUM_TASK_TOTAL - 1 ) cout << "\t";
     }
     cout << endl;
 }
