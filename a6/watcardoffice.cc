@@ -84,11 +84,15 @@ void WATCardOffice::Courier::main() {
             // Request work - may get blocked
             Job* job = m_office.requestWork();
 
+            // Print start funds transfer
+            m_office.m_prt.print( Printer::Courier, m_id, 't', job->args.sid, job->args.amount );
             // Withdraw from the back
             m_office.m_bank.withdraw( job->args.sid, job->args.amount );
 
             // Deposit after a funds transfer
             job->args.card->deposit( job->args.amount );
+            // Print complete funds transfer
+            m_office.m_prt.print( Printer::Courier, m_id, 'T', job->args.sid, job->args.amount );
             
             if ( mprng( 1, 6 ) % 6 == 0 ) {                     // There is a 1 in 6 chance WATCard is lost
                 job->result.exception( new Lost );              // Insert Lost exception intor student's WATCard
