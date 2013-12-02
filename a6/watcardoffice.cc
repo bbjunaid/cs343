@@ -14,13 +14,11 @@ void WATCardOffice::main() {
             osacquire( cout ) << "Inside accept destructor of WATCard office" << endl;
             for ( unsigned int i = 0; i < m_numCouriers; i++ ) {
                 _Accept( requestWork ) {
-                } _Else {
                 }
+                // Don't need else because courier can ONLY be blocked on requestWork
             }
-            osacquire( cout ) << "About to delete couriers" << endl;
-            for( unsigned int i; i < m_numCouriers; i++ )
-                delete couriers[i];
-            osacquire( cout ) << "Deleted couriers" << endl;
+            //osacquire( cout ) << "About to delete couriers" << endl;
+            //osacquire( cout ) << "Deleted couriers" << endl;
             break;
         }
         or _Accept( create ) {
@@ -41,6 +39,9 @@ void WATCardOffice::main() {
 
 WATCardOffice::~WATCardOffice() {
     osacquire( cout ) << "I'm finally finishing watcard office detructor" << endl;
+    for( unsigned int i; i < m_numCouriers; i++ ) {
+        delete couriers[i];
+    }
 }
 
 WATCardOffice::WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers ) 
@@ -97,23 +98,23 @@ void WATCardOffice::Courier::main() {
         }
         _Else {
             // Request work - may get blocked
-            osacquire( cout ) << "Requesting work" << endl;
+            //osacquire( cout ) << "Requesting work" << endl;
             Job* job = m_office.requestWork();
 
             if ( job == NULL ) {
                 osacquire( cout ) << "Job is NULL" << endl;
-                continue;
+                break;
             }
-            osacquire( cout ) << "Done Requesting work" << endl;
+            //osacquire( cout ) << "Done Requesting work" << endl;
 
             // Print start funds transfer
-            osacquire( cout ) << "About to print" << endl;
+            //osacquire( cout ) << "About to print" << endl;
             m_prt.print( Printer::Courier, m_id, 't', job->args.sid, job->args.amount );
-            osacquire( cout ) << "Done print" << endl;
+            //osacquire( cout ) << "Done print" << endl;
             // Withdraw from the back
-            osacquire( cout ) << "About to withdraw" << endl;
+            //osacquire( cout ) << "About to withdraw" << endl;
             m_bank.withdraw( job->args.sid, job->args.amount );
-            osacquire( cout ) << "Done withdrawing" << endl;
+            //osacquire( cout ) << "Done withdrawing" << endl;
 
             // Deposit after a funds transfer
             job->args.card->deposit( job->args.amount );
