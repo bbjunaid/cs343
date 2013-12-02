@@ -40,10 +40,6 @@ void BottlingPlant::main() {
     m_prt.print( Printer::BottlingPlant, 'F' );
 }
 
-BottlingPlant::~BottlingPlant() {
-    osacquire( cout ) << "In destructor of bottling plant" << endl;
-}
-
 BottlingPlant::BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int numVendingMachines,
              unsigned int maxShippedPerFlavour, unsigned int maxStockPerFlavour,
              unsigned int timeBetweenShipments )
