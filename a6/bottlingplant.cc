@@ -8,7 +8,7 @@ extern MPRNG mprng;
 
 void BottlingPlant::main() {
     // Truck created at initialization
-    // Perform a production run
+    Truck truck ( m_prt, m_nameServer, *this, m_numVendingMachines, m_maxStockPerFlavour );
 
     m_prt.print( Printer::BottlingPlant, 'S' );           // Print starting message
 
@@ -17,10 +17,10 @@ void BottlingPlant::main() {
         _Accept( ~BottlingPlant ) {
             m_isClosing = true;
             _Accept( getShipment ) {
-                delete m_truck;
             }
             break;
         } _Else {
+            // Perform a production run
             // Yield before producing to simulate production
             yield( m_timeBetweenShipments );
 
@@ -40,6 +40,10 @@ void BottlingPlant::main() {
     m_prt.print( Printer::BottlingPlant, 'F' );
 }
 
+BottlingPlant::~BottlingPlant() {
+    osacquire( cout ) << "In destructor of bottling plant" << endl;
+}
+
 BottlingPlant::BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int numVendingMachines,
              unsigned int maxShippedPerFlavour, unsigned int maxStockPerFlavour,
              unsigned int timeBetweenShipments )
@@ -49,7 +53,6 @@ BottlingPlant::BottlingPlant( Printer &prt, NameServer &nameServer, unsigned int
 , m_maxShippedPerFlavour( maxShippedPerFlavour )
 , m_maxStockPerFlavour( maxStockPerFlavour )
 , m_timeBetweenShipments( timeBetweenShipments )
-, m_truck( new Truck( prt, nameServer, *this, numVendingMachines, maxStockPerFlavour ) ) 
 , m_isClosing(false) {}
 
 bool BottlingPlant::getShipment( unsigned int cargo[] ) {
