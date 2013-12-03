@@ -27,12 +27,14 @@ _Task WATCardOffice {
         Job( Args args ) : args( args ) {}
     }; 
 
-    _Task Courier {                 // Worker tasks transfers funds from bank to student's watcard on behalf of the office
+    _Task Courier {                          // Worker tasks transfers funds from bank to student's watcard on behalf of the office
         void main();
       public:
+        // Courier gets instance of the office and a unique id among couriers
         Courier( unsigned int id, WATCardOffice &office, Printer &prt, Bank &bank );
 
       private:
+        // Courier's private task variables
         unsigned int m_id;
         WATCardOffice &m_office;
         Printer &m_prt;
@@ -51,10 +53,9 @@ _Task WATCardOffice {
     Printer &m_prt;
     Bank &m_bank;
     unsigned int m_numCouriers;
-    WATCard *m_card;
-    std::queue<Job *> m_requests;
-    Job *m_newJob;
-    std::vector<Courier*> couriers;
+    std::queue<Job *> m_requests;           // Queue of jobs used by office to hand off new work to the courier
+    Job *m_newJob;                          // Pointer to a newly created job that office hands off to courier
+    std::vector<Courier*> couriers;         // Vector holding pointer to created couriers. Couriers are dynamicaly created as their number is not known statically
 };
 
 #endif // _WATCARDOFFICE_H__

@@ -9,6 +9,8 @@
 
 extern MPRNG mprng;                  // Declaration of global pseudo-random number generator (same for all components)
 
+// student constructor
+// initialize all task variables
 Student::Student( Printer &prt, NameServer &nameServer, WATCardOffice &cardOffice, unsigned int id, 
              unsigned int maxPurchases )
 : m_prt(prt)
@@ -17,11 +19,14 @@ Student::Student( Printer &prt, NameServer &nameServer, WATCardOffice &cardOffic
 , m_id(id)
 , m_maxPurchases(maxPurchases) {}
 
+// student task code
+// student periodicaly buys thir favourite soda 
+// until they have bought the amount they were intending to and then they terminate
 void Student::main() {
     
     WATCard::FWATCard fCard;                // Future watcard
-    VendingMachine::Flavours favSoda;     // Student's favourite soda
-    unsigned int numBottles;              // Student's number of purchases
+    VendingMachine::Flavours favSoda;       // Student's favourite soda
+    unsigned int numBottles;                // Student's number of purchases
     VendingMachine::Status buyStatus;       // The status of the purchase made by the student
     VendingMachine* m_vendingMachine;       // Vending machine assigned by nameServer that purchases
 
@@ -30,7 +35,7 @@ void Student::main() {
     
 
     m_prt.print( Printer::Student, m_id, 'S', favSoda, numBottles );  // Print student start message
-    fCard = m_cardOffice.create( m_id, 5 ); // Create a WATCard via the WATCardOffice with a $5 balance 
+    fCard = m_cardOffice.create( m_id, 5 );            // Create a WATCard via the WATCardOffice with a $5 balance 
 
     // Obtain the location of a vending machine from the name server
     m_vendingMachine = m_nameServer.getMachine( m_id );
@@ -68,7 +73,7 @@ void Student::main() {
     }
 
     delete fCard();     // delete the WATcard contained in the future which was allocated dynamically
-    m_prt.print( Printer::Student, m_id, 'F');    // Student finished purchasing
-                                            // Print finished
+    m_prt.print( Printer::Student, m_id, 'F');      // Student finished purchasing
+                                                    // Print finished
 }
  

@@ -6,6 +6,11 @@
 
 extern MPRNG mprng;
 
+// WATCardOffice task code
+// WATCardOffice is an administrator task
+// Upon receiving new jobs, the watcard office accepts couriers that have requested work
+// Through a queue, the office hands off tasks to the couriers
+// Courier are externally scheduled until there is a new job for them to do (size of queue is not 0)
 void WATCardOffice::main() {
     m_prt.print( Printer::WATCardOffice, 'S' );
     
@@ -20,15 +25,15 @@ void WATCardOffice::main() {
             }       
             break;
         }
-        or _When( m_requests.size() > 0 ) _Accept( requestWork ) {
+        or _When( m_requests.size() > 0 ) _Accept( requestWork ) {  // Externally schedule couriers, unblock if new jobs are to be handed off
             m_prt.print( Printer::WATCardOffice, 'W' );
         }
         or _Accept( create ) {
-            m_requests.push( m_newJob );
+            m_requests.push( m_newJob );                            // Push new task for courier to pickup
             // Print creation rendezvous complete
             m_prt.print( Printer::WATCardOffice, 'C', m_newJob->args.sid, m_newJob->args.amount );
         } or _Accept( transfer ) {
-            m_requests.push( m_newJob );
+            m_requests.push( m_newJob );                            // Push new task for courier to pickup
             // Print transfer rendezvous complete
             m_prt.print( Printer::WATCardOffice, 'T', m_newJob->args.sid, m_newJob->args.amount );
         } 
@@ -36,6 +41,9 @@ void WATCardOffice::main() {
     m_prt.print( Printer::WATCardOffice, 'F' );
 }
 
+// Office constructor
+// Initialize task variables
+// Dynamically create couriers
 WATCardOffice::WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers ) 
 : m_prt(prt)
 , m_bank(bank)
@@ -45,19 +53,27 @@ WATCardOffice::WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers
     }
 }
 
-
+// Create new job along with a new watcard for the student
+// Copy pointer to job so office can handle it as an admin
+// Return future to student right away
 WATCard::FWATCard WATCardOffice::create( unsigned int sid, unsigned int amount ) {
     Job *job = new Job( Args( sid, amount, new WATCard() ) );
     m_newJob = job;
     return job->result;
 }
 
+// Create new job along with the student's watcard passed in
+// Copy pointer to job so office can handle it as an admin
+// Return future to student right away
 WATCard::FWATCard WATCardOffice::transfer( unsigned int sid, unsigned int amount, WATCard *card ) {
     Job *job = new Job( Args( sid, amount, card ) ); 
     m_newJob = job;
     return job->result;
 }
 
+// Couriers call request work
+// Courier are externaly schedule on this call
+// If the size of request queue is zero, a NULL is returned to indicate that office is closing
 WATCardOffice::Job *WATCardOffice::requestWork() {
     // When Courier get's unblocked at the very end, there will be no jobs
     if ( m_requests.empty () ) 
@@ -73,6 +89,9 @@ WATCardOffice::Job *WATCardOffice::requestWork() {
 // Implmentation of Courier Task
 //-----------------------------------------------------------------------------
 
+// Courier construct
+// initialize all task variables
+// Enclosing task (WATCardOffice) passes an instance of itself to the courier
 WATCardOffice::Courier::Courier( unsigned int id, WATCardOffice &office, Printer &prt, Bank &bank )
 : m_id( id )
 , m_office(office)
@@ -80,6 +99,14 @@ WATCardOffice::Courier::Courier( unsigned int id, WATCardOffice &office, Printer
 , m_bank( bank )
 {}
 
+// Courier task code
+// Courier continuouly requests a job
+// The WATCardOffice return a NULL pointer instead of a pointer to a Job if it is closing at which point
+// the courier also terminates
+// The courier transfer funds for a student from their bank account to their watcard
+// There is a 1 in 6 chance that after the funds transfer the student card is lost, watcard is deleted, exception is thrown
+// If watcard wasn't lost, future is delivered and student requesting that future is unblocked
+// Job is deleted at the end of a courier run
 void WATCardOffice::Courier::main() {
     m_prt.print( Printer::Courier, m_id, 'S' );
     for ( ;; ) {
