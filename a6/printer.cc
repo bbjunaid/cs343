@@ -7,7 +7,8 @@ Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, uns
 : m_numStudents( numStudents )
 , m_numVendingMachines( numVendingMachines )
 , m_numCouriers( numCouriers )
-, NUM_TASK_TOTAL( numStudents + numVendingMachines + numCouriers + 5 ) {
+, NUM_TASK_TOTAL( numStudents + numVendingMachines + numCouriers + 5 )
+, m_finishedCnt(0) {
 
     m_buffer.resize( NUM_TASK_TOTAL );
 
