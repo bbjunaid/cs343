@@ -10,7 +10,14 @@ void VendingMachine::main() {
     for ( ;; ) {
         _Accept ( ~VendingMachine ) {
             break;
-        } or _Accept( inventory, buy, restocked ){
+        } 
+        or _Accept( inventory ) {
+            m_restocking = true;                            // indicate restocking
+        }
+        or _Accept( restocked ) {
+            m_restocking = false;                           // indicate restocking complete
+        }
+        or _When(!m_restocking) _Accept( buy ) {     // Do not accept student calls to buy when restocking
         }
     }
     m_prt.print( Printer::Vending, m_id, 'F' );
