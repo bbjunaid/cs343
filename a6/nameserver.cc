@@ -7,11 +7,15 @@ void NameServer::main() {
 
     // wait until all machines are registered   
     for ( unsigned int i = 0; i < m_numVendingMachines; i++ ) {
-        m_studentTurns[i] = i;
         _Accept( VMregister ) {
             m_prt.print( Printer::NameServer, 'R', m_tempMachine->getId() );
             m_registeredMachines[i] = m_tempMachine;
         }
+    }
+
+    // initial vending machines students will access
+    for ( unsigned int i = 0; i < m_numStudents; i++ ) {
+        m_studentTurns[i] = i % m_numVendingMachines;
     }
 
     for ( ;; ) {
@@ -22,8 +26,8 @@ void NameServer::main() {
         // will access
         or _Accept ( getMachine ) {
             m_prt.print( Printer::NameServer, 'N', m_requestingStudent, m_tempMachine->getId() );
-            m_studentTurns[m_requestingStudent] = \
-                ( m_studentTurns[m_requestingStudent] + 1 ) % m_numVendingMachines;
+            unsigned int next_turn = ( m_studentTurns[m_requestingStudent] + 1 ) % m_numVendingMachines;
+            m_studentTurns[m_requestingStudent] = next_turn;
         } 
         or _Accept ( getMachineList ) {};
     } 

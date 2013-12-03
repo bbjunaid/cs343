@@ -216,7 +216,6 @@ void Printer::flush() {
 }
 
 void Printer::flushFinished( unsigned int id ) {
-    cout << "Finishing id: " << id << endl;
     for ( unsigned int i = 0; i < NUM_TASK_TOTAL; i += 1 ) {
         if ( i != id ) cout << "...";
         else cout << 'F';
