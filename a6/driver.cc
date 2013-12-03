@@ -27,7 +27,7 @@ void usage( char *argv[] ) {
 
 void uMain::main() {
     ConfigParms cparams;
-    string configFile = "soda.config";
+    string configFile = "soda.config"; // default file
     int seed = getpid();
 
     // Error for extra arguments
@@ -42,7 +42,7 @@ void uMain::main() {
 			usage( argv );
 		}
         // FALL THROUGH
-      case 2:                       // verify numConsultations >= 0
+      case 2:                       // use config file
         configFile = argv[1]; 
         break;
       case 1:                       // no arguments, that's ok

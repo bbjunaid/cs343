@@ -8,14 +8,17 @@
 #include <vector>
 
 _Monitor Bank {
-    unsigned int m_numStudents;
-    uCondition* courier;
-    std::vector<unsigned int> m_accounts;
   public:
     Bank( unsigned int numStudents );
     ~Bank();
     void deposit( unsigned int id, unsigned int amount );
     void withdraw( unsigned int id, unsigned int amount );
+
+  private:
+    unsigned int m_numStudents;             // number of students
+    uCondition* courier;                    // couriers block on student accounts if not enough
+                                            // funds
+    std::vector<unsigned int> m_accounts;   // balances of the students
 };
 
 #endif // _BANK_H__
