@@ -11,15 +11,17 @@ void WATCardOffice::main() {
     
     for ( ;; ) {
         _Accept ( ~WATCardOffice ) {
-            osacquire( cout ) << "Inside accept destructor of WATCard office" << endl;
             for ( unsigned int i = 0; i < m_numCouriers; i++ ) {
                 _Accept( requestWork ) {
                 }
-                // Don't need else because courier can ONLY be blocked on requestWork
             }
-            //osacquire( cout ) << "About to delete couriers" << endl;
-            //osacquire( cout ) << "Deleted couriers" << endl;
+            for( unsigned int i = 0; i < m_numCouriers; i++ ) {
+                delete couriers[i];
+            }       
             break;
+        }
+        or _When( m_requests.size() > 0 ) _Accept( requestWork ) {
+            m_prt.print( Printer::WATCardOffice, 'W' );
         }
         or _Accept( create ) {
             m_requests.push( m_newJob );
@@ -29,26 +31,15 @@ void WATCardOffice::main() {
             m_requests.push( m_newJob );
             // Print transfer rendezvous complete
             m_prt.print( Printer::WATCardOffice, 'T', m_newJob->args.sid, m_newJob->args.amount );
-        } or _When( m_requests.size() > 0 ) _Accept( requestWork ) {
-            m_prt.print( Printer::WATCardOffice, 'W' );
-        }
-
+        } 
     }
     m_prt.print( Printer::WATCardOffice, 'F' );
-}
-
-WATCardOffice::~WATCardOffice() {
-    osacquire( cout ) << "I'm finally finishing watcard office detructor" << endl;
-    for( unsigned int i; i < m_numCouriers; i++ ) {
-        delete couriers[i];
-    }
 }
 
 WATCardOffice::WATCardOffice( Printer &prt, Bank &bank, unsigned int numCouriers ) 
 : m_prt(prt)
 , m_bank(bank)
 , m_numCouriers(numCouriers) {
-    couriers.resize( numCouriers );
     for ( unsigned int i; i < m_numCouriers; i += 1 ) {
         couriers.push_back( new Courier( i, *this, prt, bank ) );
     }
@@ -92,45 +83,32 @@ WATCardOffice::Courier::Courier( unsigned int id, WATCardOffice &office, Printer
 void WATCardOffice::Courier::main() {
     m_prt.print( Printer::Courier, m_id, 'S' );
     for ( ;; ) {
-        _Accept( WATCardOffice::~Courier ) {
-            osacquire( cout ) << "Destructor of Courier!!!" << endl;
+        // Request work - may get blocked
+        Job* job = m_office.requestWork();
+
+        // Only gets NULL jobs when WATCardOffice is closing
+        if ( job == NULL ) {
             break;
         }
-        _Else {
-            // Request work - may get blocked
-            //osacquire( cout ) << "Requesting work" << endl;
-            Job* job = m_office.requestWork();
 
-            if ( job == NULL ) {
-                osacquire( cout ) << "Job is NULL" << endl;
-                break;
-            }
-            //osacquire( cout ) << "Done Requesting work" << endl;
+        // Print start funds transfer
+        m_prt.print( Printer::Courier, m_id, 't', job->args.sid, job->args.amount );
+        // Withdraw from the back
+        m_bank.withdraw( job->args.sid, job->args.amount );
 
-            // Print start funds transfer
-            //osacquire( cout ) << "About to print" << endl;
-            m_prt.print( Printer::Courier, m_id, 't', job->args.sid, job->args.amount );
-            //osacquire( cout ) << "Done print" << endl;
-            // Withdraw from the back
-            //osacquire( cout ) << "About to withdraw" << endl;
-            m_bank.withdraw( job->args.sid, job->args.amount );
-            //osacquire( cout ) << "Done withdrawing" << endl;
-
-            // Deposit after a funds transfer
-            job->args.card->deposit( job->args.amount );
-            // Print complete funds transfer
-            m_prt.print( Printer::Courier, m_id, 'T', job->args.sid, job->args.amount );
-            
-            if ( mprng( 5 ) == 0 ) {                     // There is a 1 in 6 chance WATCard is lost
-                job->result.exception( new Lost );              // Insert Lost exception intor student's WATCard
-                delete job->args.card;                          // Delete current WATCard
-            }
-            else {
-                job->result.delivery( job->args.card );         // Deliver future upon a successful transfer of funds
-            }
-            delete job;
+        // Deposit after a funds transfer
+        job->args.card->deposit( job->args.amount );
+        // Print complete funds transfer
+        m_prt.print( Printer::Courier, m_id, 'T', job->args.sid, job->args.amount );
+        
+        if ( mprng( 5 ) == 0 ) {                     // There is a 1 in 6 chance WATCard is lost
+            job->result.exception( new Lost );              // Insert Lost exception intor student's WATCard
+            delete job->args.card;                          // Delete current WATCard
         }
+        else {
+            job->result.delivery( job->args.card );         // Deliver future upon a successful transfer of funds
+        }
+        delete job;
     }
     m_prt.print( Printer::Courier, m_id, 'F' );          // Print finished message
 }
-
