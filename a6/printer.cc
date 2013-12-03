@@ -3,6 +3,10 @@
 #include <iostream>         // cin, cout, endl
 using namespace std;
 
+//--------------------------------------------------------------------------------
+// Printer::Printer constructor
+// Initialize all monitor variables, print header, initialize states to empty
+//--------------------------------------------------------------------------------
 Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, unsigned int numCouriers )
 : m_numStudents( numStudents )
 , m_numVendingMachines( numVendingMachines )

@@ -22,14 +22,15 @@ void NameServer::main() {
         _Accept ( ~NameServer ) {
             break;
         } 
-        // Print student requesting new machine and assign the next machine index the student
-        // will access
+        // Truck call
+        or _Accept ( getMachineList ) {         // Truck gets priority over student
+        }
+        // Studen call
         or _Accept ( getMachine ) {
             m_prt.print( Printer::NameServer, 'N', m_requestingStudent, m_tempMachine->getId() );
             unsigned int next_turn = ( m_studentTurns[m_requestingStudent] + 1 ) % m_numVendingMachines;
             m_studentTurns[m_requestingStudent] = next_turn;
         } 
-        or _Accept ( getMachineList ) {};
     } 
     m_prt.print( Printer::NameServer, 'F' );
 }
