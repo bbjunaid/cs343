@@ -3,6 +3,10 @@
 #include "nameserver.h"
 #include "watcard.h"
 
+// Vending machine task code
+// Register vending machine
+// Give priority to restocking (by the truck) so that restocking can happen before a student buys
+// Do no let student buy if restocking is happening (externally scheduled)
 void VendingMachine::main() {
     m_prt.print( Printer::Vending, m_id, 'S', m_sodaCost );
     // register with the nameServer
@@ -23,6 +27,9 @@ void VendingMachine::main() {
     m_prt.print( Printer::Vending, m_id, 'F' );
 }
 
+// VendingMachine constructor
+// Initialize internal variables
+// Reset number of sodas stocked
 VendingMachine::VendingMachine( Printer &prt, NameServer &nameServer, unsigned int id,\
                                 unsigned int sodaCost, unsigned int maxStockPerFlavour ) 
 : m_prt( prt )
@@ -64,10 +71,12 @@ void VendingMachine::restocked() {
     m_prt.print( Printer::Vending, m_id, 'R' );
 }
 
+// Non-mutex to return the cost of a vending machine's sode
 _Nomutex unsigned int VendingMachine::cost() {
     return m_sodaCost;
 }
 
+// Non-mutex to return the vending machine's id 
 _Nomutex unsigned int VendingMachine::getId() {
     return m_id;
 }

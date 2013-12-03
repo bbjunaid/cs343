@@ -1,5 +1,7 @@
 #include "watcard.h"
 
+// Watcard initializer
+// Make watcard with a balance of 0
 WATCard::WATCard() : m_balance(0) { }
 
 // The courier call deposit after a funds transfer

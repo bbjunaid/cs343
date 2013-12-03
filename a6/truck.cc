@@ -4,8 +4,11 @@
 #include "bottlingplant.h"
 #include "MPRNG.h"
 
-extern MPRNG mprng;
+extern MPRNG mprng;         // global random number generator
 
+// Truck task code
+// Truck picks up sodas from the bottling plant and delivers to as many vending machines to fill them up
+// Whatever is left after a fill up of vending machines is thrown away
 void Truck::main() {
     VendingMachine** machineList;
     unsigned int* machineInventory;
@@ -55,6 +58,8 @@ void Truck::main() {
     m_prt.print( Printer::Truck, 'F' );
 }
 
+// Truck constructor
+// Initialize task variables
 Truck::Truck( Printer &prt, NameServer &nameServer, BottlingPlant &plant,
        unsigned int numVendingMachines, unsigned int maxStockPerFlavour )
 : m_prt( prt )

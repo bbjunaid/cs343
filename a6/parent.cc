@@ -6,6 +6,9 @@
 
 extern MPRNG mprng;
 
+// Parent task code
+// Parents periodically deposit money into a random student's bank account
+// Parent terminates when there are no more student (see driver)
 void Parent::main() {
     m_prt.print( Printer::Parent, 'S' );
     for ( ;; ) {
@@ -24,6 +27,8 @@ void Parent::main() {
     m_prt.print( Printer::Parent, 'F' );
 }
 
+// Parent constructor
+// Initialize task variables
 Parent::Parent( Printer &prt, Bank &bank, unsigned int numStudents, unsigned int parentalDelay ) 
 : m_prt(prt)
 , m_bank(bank)
