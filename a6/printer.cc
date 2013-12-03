@@ -3,10 +3,10 @@
 #include <iostream>         // cin, cout, endl
 using namespace std;
 
-//--------------------------------------------------------------------------------
-// Printer::Printer constructor
+
+// Printer constructor
 // Initialize all monitor variables, print header, initialize states to empty
-//--------------------------------------------------------------------------------
+// Update the kind of all tasks in their respective buffer structs 
 Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, unsigned int numCouriers )
 : m_numStudents( numStudents )
 , m_numVendingMachines( numVendingMachines )
@@ -18,7 +18,7 @@ Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, uns
 
     // Print header
     cout << "Parent\tWATOff\tNames\tTruck\tPlant\t";
-    m_buffer[0].kind = Parent;
+    m_buffer[0].kind = Parent; 
     m_buffer[1].kind = WATCardOffice;
     m_buffer[2].kind = NameServer;
     m_buffer[3].kind = Truck;
@@ -48,9 +48,8 @@ Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, uns
     cout << endl;
 }
 
-Printer::~Printer() {
-}
-
+// central print function for print calls with singular tasks that don't have lid
+// other print functions that don't have lid call this function for actual printing
 void Printer::print( Kind kind, char state ) {
     if ( state == 'F' ) {
         m_finishedCnt++;
@@ -72,17 +71,21 @@ void Printer::print( Kind kind, char state ) {
     m_isBufferEmpty = false;
 }
 
+// updates value1 and call print with only kind and state for actual printing
 void Printer::print( Kind kind, char state, int value1 ) {
     print( kind, state );
     m_buffer[getGlobalId( kind )].value1 = value1;
 }
 
+// updates value1 and value2 and call print with only kind and state for actual printing
 void Printer::print( Kind kind, char state, int value1, int value2 ) {
     print( kind, state );
     m_buffer[getGlobalId( kind )].value1 = value1;
     m_buffer[getGlobalId( kind )].value2 = value2;
 }
 
+// central print function for print calls with tasks of same kind and different id
+// other print functions with lid call this function for actual printing
 void Printer::print( Kind kind, unsigned int lid, char state ) {
     if ( state == 'F' ) {
         m_finishedCnt++;
@@ -103,17 +106,20 @@ void Printer::print( Kind kind, unsigned int lid, char state ) {
     m_isBufferEmpty = false;
 }
 
+// updates value1 and cal print with kind, lid, and state for actual printing
 void Printer::print( Kind kind, unsigned int lid, char state, int value1 ) {
     print( kind, lid, state );
     m_buffer[getGlobalId( kind, lid )].value1 = value1;
 }
 
+// updates value1 and value2 and cal print with kind, lid, and state for actual printing
 void Printer::print( Kind kind, unsigned int lid, char state, int value1, int value2 ) {
     print( kind, lid, state );
     m_buffer[getGlobalId( kind, lid )].value1 = value1;
     m_buffer[getGlobalId( kind, lid )].value2 = value2;
 }
 
+// return the id of the sinugular tasks out of all the tasks in the program
 unsigned int Printer::getGlobalId( Kind kind ) {
     unsigned int id = 0;
     switch( kind ) {
@@ -138,6 +144,7 @@ unsigned int Printer::getGlobalId( Kind kind ) {
     return id;
 }
 
+// return the id of the multiple tasks out of all the tasks in the program
 unsigned int Printer::getGlobalId( Kind kind, unsigned int lid ) {
     unsigned int id = lid;
     switch( kind ) {
@@ -159,6 +166,10 @@ unsigned int Printer::getGlobalId( Kind kind, unsigned int lid ) {
 void Printer::flush() {
     for ( unsigned int id = 0; id < NUM_TASK_TOTAL; id += 1 ) {
         cout << m_buffer[id].state;
+        /*
+         * As per the assignment requirements, value1 and value2 are printed
+         * depending on the kind of task and the state being flushed
+         */
         switch( m_buffer[id].kind ) {
             case Parent:
                 if ( m_buffer[id].state == 'D' ) {
@@ -215,11 +226,14 @@ void Printer::flush() {
                 }
                 break;
         }
+        // Print standard tab between states except the last one
         if ( id < NUM_TASK_TOTAL - 1 ) cout << "\t";
     }
     cout << endl;
 }
 
+// Flushes the special row of states when a task has finished
+// Print 'F' for task that is finished and '...' for all other tasks
 void Printer::flushFinished( unsigned int id ) {
     for ( unsigned int i = 0; i < NUM_TASK_TOTAL; i += 1 ) {
         if ( i != id ) cout << "...";
@@ -228,11 +242,12 @@ void Printer::flushFinished( unsigned int id ) {
         if ( i < NUM_TASK_TOTAL -1 ) cout << "\t";
     }
     cout << endl;
-    if ( m_finishedCnt == NUM_TASK_TOTAL ) {
+    if ( m_finishedCnt == NUM_TASK_TOTAL ) {        // if all tasks have finish, indicate with a special line at the end of program
         cout << "***********************" << endl;
     }
 }
 
+// Clear the states in the buffer
 void Printer::clear() {
     for ( unsigned int id = 0; id < NUM_TASK_TOTAL; id += 1 ) {
         m_buffer[id].state = ' ';
