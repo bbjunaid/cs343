@@ -44,7 +44,6 @@ Printer::Printer( unsigned int numStudents, unsigned int numVendingMachines, uns
 }
 
 Printer::~Printer() {
-    cout << "Printer destructor" << endl;
 }
 
 void Printer::print( Kind kind, char state ) {
@@ -217,11 +216,12 @@ void Printer::flush() {
 }
 
 void Printer::flushFinished( unsigned int id ) {
+    cout << "Finishing id: " << id << endl;
     for ( unsigned int i = 0; i < NUM_TASK_TOTAL; i += 1 ) {
         if ( i != id ) cout << "...";
         else cout << 'F';
 
-        if ( id < NUM_TASK_TOTAL -1 ) cout << "\t";
+        if ( i < NUM_TASK_TOTAL -1 ) cout << "\t";
     }
     cout << endl;
     if ( m_finishedCnt == NUM_TASK_TOTAL ) {
